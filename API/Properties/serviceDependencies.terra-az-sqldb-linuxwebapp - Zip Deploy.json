@@ -1,0 +1,14 @@
+{
+  "dependencies": {
+    "apis1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.ApiManagement/service/terra-az-sqldb-linuxwebapp-apim/apis/terra-az-sqldb-linuxwebapp-api",
+      "type": "apis.azure"
+    },
+    "mssql1": {
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/terra-az-sqldb-sqlserver/databases/terra-az-sqldb-db",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:cnTareas"
+    }
+  }
+}
