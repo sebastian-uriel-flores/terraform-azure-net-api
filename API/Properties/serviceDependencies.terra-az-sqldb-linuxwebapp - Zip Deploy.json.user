@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "apis1": {
+      "restored": true,
+      "restoreTime": "2022-09-11T11:58:59.5753849Z"
+    },
+    "mssql1": {
+      "restored": true,
+      "restoreTime": "2022-09-11T12:08:44.6930298Z"
+    }
+  },
+  "parameters": {
+    "mssql1.subscriptionId": {
+      "Name": "mssql1.subscriptionId",
+      "Type": "subscription",
+      "Value": "56e6b681-5887-406e-9f6b-a72b0bccd747"
+    },
+    "mssql1.resourceGroupName": {
+      "Name": "mssql1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "terra-az-sqldb-resourcegroup"
+    },
+    "apis1.resourceGroupName": {
+      "Name": "apis1.resourceGroupName",
+      "Type": "resourceGroup",
+      "Value": "terra-az-sqldb-resourcegroup"
+    },
+    "apis1.subscriptionId": {
+      "Name": "apis1.subscriptionId",
+      "Type": "subscription",
+      "Value": "56e6b681-5887-406e-9f6b-a72b0bccd747"
+    }
+  }
+}
