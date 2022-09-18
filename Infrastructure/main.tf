@@ -80,7 +80,7 @@ resource "azurerm_service_plan" "demo" {
   location            = azurerm_resource_group.demo.location
   resource_group_name = azurerm_resource_group.demo.name
   os_type             = "Linux"
-  sku_name            = "F1"
+  sku_name            = "Free"
 
   tags = {
     Scope = "Demo"
@@ -201,6 +201,7 @@ resource "azurerm_linux_web_app" "demo" {
   service_plan_id     = azurerm_service_plan.demo.id
 
   site_config {
+    always_on = false
     #  api_management_api_id = azurerm_api_management_api.demo.id
   }
 
