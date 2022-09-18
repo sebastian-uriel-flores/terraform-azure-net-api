@@ -54,7 +54,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false -var resource_group_name="${{ env.IAC_RESOURCE_GROUP_NAME }}" -var location="${{ env.IAC_LOCATION }}" -var="sqlserver_administrator_login=${{ secrets.SQL_SERVER_ADMIN_USERNAME }}" -var="sqlserver_administrator_login_password=${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}"
+      run: terraform plan -out -input=false -var resource_group_name="${{ env.IAC_RESOURCE_GROUP_NAME }}" -var location="${{ env.IAC_LOCATION }}" -var="sqlserver_administrator_login=${{ secrets.SQL_SERVER_ADMIN_USERNAME }}" -var="sqlserver_administrator_login_password=${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}"
       working-directory: '${{ env.IAC_PATH }}'
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
@@ -72,7 +72,7 @@ jobs:
       run: |
           dotnet restore
           dotnet build -c Release
-          dotnet publish -c Release -o '${{ env.API_PATH }}/out' 
+          dotnet publish -c Release -o 'out' 
       working-directory: '${{ env.API_PATH }}'
           
     - uses: Azure/login@v1
