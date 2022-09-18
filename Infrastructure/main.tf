@@ -87,6 +87,72 @@ resource "azurerm_service_plan" "demo" {
   }
 }
 
+resource "azurerm_api_management" "demo" {
+  name                = "apimanagement${random_string.demo.result}"
+  location            = azurerm_resource_group.demo.location
+  resource_group_name = azurerm_resource_group.demo.name
+  publisher_name      = "demo-api"
+  publisher_email     = "s.flores@outlook.com.ar"
+
+  sku_name = "Consumption_0"
+}
+
+resource "azurerm_api_management_api" "demo" {
+  name                  = "api${random_string.demo.result}"
+  resource_group_name   = azurerm_resource_group.demo.name
+  api_management_name   = azurerm_api_management.demo.name
+  revision              = "1"
+  display_name          = "API Tareas"
+  protocols             = ["https"]
+  subscription_required = false
+}
+
+resource "azurerm_api_management_api_operation" "demo" {
+  operation_id        = "health-check"
+  api_name            = azurerm_api_management_api.demo.name
+  api_management_name = azurerm_api_management_api.demo.api_management_name
+  resource_group_name = azurerm_api_management_api.demo.resource_group_name
+  display_name        = "Health Check"
+  method              = "GET"
+  url_template        = "/api/helloworld"
+  description         = "Chequea que la API esté funcionando"
+
+  response {
+    status_code = 200
+  }
+}
+
+#resource "azurerm_api_management_api_operation" "terra-az-sqldb-tareas-get-all" {
+#  operation_id        = "tareas-get-all"
+#  api_name            = azurerm_api_management_api.terra-az-sqldb.name
+#  api_management_name = azurerm_api_management_api.terra-az-sqldb.api_management_name
+#  resource_group_name = azurerm_api_management_api.terra-az-sqldb.resource_group_name
+#  display_name        = "Tareas GET"
+#  method              = "GET"
+#  url_template        = "/api/tarea"
+#  description         = "Devuelve el listado de todas las tareas."
+#
+#  response {
+#    status_code = 200
+#  }
+#}
+#
+#resource "azurerm_api_management_api_operation" "terra-az-sqldb-categorias-get-all" {
+#  operation_id        = "categorias-get-all"
+#  api_name            = azurerm_api_management_api.terra-az-sqldb.name
+#  api_management_name = azurerm_api_management_api.terra-az-sqldb.api_management_name
+#  resource_group_name = azurerm_api_management_api.terra-az-sqldb.resource_group_name
+#  display_name        = "Categorías GET"
+#  method              = "GET"
+#  url_template        = "/api/categoria"
+#  description         = "Devuelve el listado de todas las categorías."
+#
+#  response {
+#    status_code = 200
+#  }
+#}
+
+
 
 resource "azurerm_linux_web_app" "demo" {
   name                = "webapp${random_string.demo.result}"
@@ -95,6 +161,7 @@ resource "azurerm_linux_web_app" "demo" {
   service_plan_id     = azurerm_service_plan.demo.id
 
   site_config {
+    api_management_api_id = azurerm_api_management_api.demo.id
   }
 
   connection_string {
