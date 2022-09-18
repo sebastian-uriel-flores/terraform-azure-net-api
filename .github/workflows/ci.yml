@@ -19,10 +19,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
       ARM_ACCESS_KEY: ${{ secrets.ARM_ACCOUNT_KEY }}
-      TF_sqlserver_administrator_login: ${{ secrets.SQL_SERVER_ADMIN_USERNAME }}
-      TF_sqlserver_administrator_login_password: ${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}
 
-      AZ_WEBAPP_NAME: demo-tf-az-webapp-api    # set this to your application's name
+      WEBAPP_NAME: webapp  # set this to your application's name
       API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
       IAC_PATH: 'Infrastructure'
       IAC_LOCATION: 'Brazil South'
@@ -55,7 +53,7 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -input=false -var location="${{ env.location }}"
+      run: terraform plan -input=false -var location="${{ env.location }}" -var sqlserver_administrator_login="${{ secrets.SQL_SERVER_ADMIN_USERNAME }}" -var sqlserver_administrator_login_password="${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}"
       working-directory: '${{ env.IAC_PATH }}'
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
@@ -84,7 +82,7 @@ jobs:
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2
       with: 
-          app-name: '${{ env.AZ_WEBAPP_NAME }}' # Replace with your app name          
+          app-name: '${{ env.WEBAPP_NAME }}' # Replace with your app name          
           package: '${{ env.API_PATH }}/out'
       
     
