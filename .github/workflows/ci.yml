@@ -63,8 +63,8 @@ jobs:
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.TF_ARM_TENANT_ID }}
       AZ_WEBAPP_NAME: demo-tf-az-webapp-api    # set this to your application's name
-      API_PATH: '.\API'      # set this to the path to your web app project, defaults to the repository root
-      IAC_PATH: '.\Infrastructure'
+      API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
+      IAC_PATH: 'Infrastructure'
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
