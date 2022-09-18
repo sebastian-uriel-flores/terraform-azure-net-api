@@ -49,7 +49,7 @@ resource "azurerm_storage_account" "demo" {
 }
 
 resource "azurerm_mssql_server" "demo" {
-  name                         = "sqlserver"
+  name                         = "sqlserver${random_string.demo.result}"
   resource_group_name          = azurerm_resource_group.demo.name
   location                     = azurerm_resource_group.demo.location
   version                      = "12.0"
@@ -62,7 +62,7 @@ resource "azurerm_mssql_server" "demo" {
 }
 
 resource "azurerm_mssql_database" "demo" {
-  name           = "sqlserverdb"
+  name           = "sqlserverdb${random_string.demo.result}"
   server_id      = azurerm_mssql_server.demo.id
   collation      = "SQL_Latin1_General_CP1_CI_AS"
   max_size_gb    = 250
@@ -76,7 +76,7 @@ resource "azurerm_mssql_database" "demo" {
 }
 
 resource "azurerm_service_plan" "demo" {
-  name                = "webappserviceplan"
+  name                = "webappserviceplan${random_string.demo.result}"
   location            = azurerm_resource_group.demo.location
   resource_group_name = azurerm_resource_group.demo.name
   os_type             = "Linux"
@@ -89,7 +89,7 @@ resource "azurerm_service_plan" "demo" {
 
 
 resource "azurerm_linux_web_app" "demo" {
-  name                = "webapp"
+  name                = "webapp${random_string.demo.result}"
   resource_group_name = azurerm_resource_group.demo.name
   location            = azurerm_service_plan.demo.location
   service_plan_id     = azurerm_service_plan.demo.id
