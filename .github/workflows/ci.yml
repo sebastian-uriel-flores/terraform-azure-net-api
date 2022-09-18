@@ -61,7 +61,7 @@ jobs:
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
       #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply -input=false -var resource_group_name="${{ env.IAC_RESOURCE_GROUP_NAME }}" -var location="${{ env.IAC_LOCATION }}" -var sqlserver_administrator_login="${{ secrets.SQL_SERVER_ADMIN_USERNAME }}" -var sqlserver_administrator_login_password="${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}" tfplan 
+      run: terraform apply -input=false tfplan 
       working-directory: '${{ env.IAC_PATH }}'
       
     - name: Setup .NET Core SDK
