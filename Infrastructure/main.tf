@@ -22,8 +22,9 @@ provider "azurerm" {
 }
 
 resource "random_string" "demo" {
-  length  = 10
+  length  = 6
   special = false
+  upper   = false  
 }
 
 resource "azurerm_resource_group" "demo" {
