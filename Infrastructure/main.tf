@@ -110,9 +110,6 @@ resource "azurerm_api_management_api" "demo" {
   protocols             = ["https"]
   subscription_required = false
 
-  tags = {
-    Scope = "Demo"
-  }
 }
 
 resource "azurerm_api_management_api_operation" "demo" {
