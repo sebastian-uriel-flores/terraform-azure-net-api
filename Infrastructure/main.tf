@@ -95,6 +95,10 @@ resource "azurerm_api_management" "demo" {
   publisher_email     = "s.flores@outlook.com.ar"
 
   sku_name = "Consumption_0"
+
+  tags = {
+    Scope = "Demo"
+  }
 }
 
 resource "azurerm_api_management_api" "demo" {
@@ -105,6 +109,10 @@ resource "azurerm_api_management_api" "demo" {
   display_name          = "API Tareas"
   protocols             = ["https"]
   subscription_required = false
+
+  tags = {
+    Scope = "Demo"
+  }
 }
 
 resource "azurerm_api_management_api_operation" "demo" {
