@@ -5,7 +5,7 @@ terraform {
       version = "=3.22.0"
     }
     random = {
-      source = "hashicorp/random"
+      source  = "hashicorp/random"
       version = "2.3.1"
     }
   }
@@ -22,8 +22,8 @@ provider "azurerm" {
 }
 
 resource "random_string" "demo" {
-  length           = 10
-  special          = false
+  length  = 10
+  special = false
 }
 
 resource "azurerm_resource_group" "demo" {
