@@ -87,12 +87,50 @@ resource "azurerm_service_plan" "demo" {
   }
 }
 
-resource "azurerm_api_management" "demo" {
-  name                = "apimanagement${random_string.demo.result}"
+#resource "azurerm_network_security_group" "demo" {
+#  name                = "securitygroup${random_string.demo.result}"
+#  location            = azurerm_resource_group.demo.location
+#  resource_group_name = azurerm_resource_group.demo.name
+#}
+
+resource "azurerm_virtual_network" "demo" {
+  name                = "virtualnetwork${random_string.demo.result}"
   location            = azurerm_resource_group.demo.location
   resource_group_name = azurerm_resource_group.demo.name
-  publisher_name      = "demo-api"
-  publisher_email     = "s.flores@outlook.com.ar"
+  address_space       = ["10.0.0.0/16"]
+  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+
+  tags = {
+    Scope = "Demo"
+  }
+}
+
+resource "azurerm_subnet" "demo" {
+  name                 = "subnet${random_string.demo.result}"
+  resource_group_name  = azurerm_resource_group.demo.name
+  virtual_network_name = azurerm_virtual_network.demo.name
+  address_prefixes     = ["10.0.1.0/24"]
+
+  delegation {
+    name = "delegation"
+
+    service_delegation {
+      name    = "Microsoft.ContainerInstance/containerGroups"
+      actions = ["Microsoft.Network/virtualNetworks/subnets/join/action", "Microsoft.Network/virtualNetworks/subnets/prepareNetworkPolicies/action"]
+    }
+  }
+}
+
+resource "azurerm_api_management" "demo" {
+  name                 = "apimanagement${random_string.demo.result}"
+  location             = azurerm_resource_group.demo.location
+  resource_group_name  = azurerm_resource_group.demo.name
+  publisher_name       = "demo-api"
+  publisher_email      = "s.flores@outlook.com.ar"
+  virtual_network_type = "Internal"
+  virtual_network_configuration {
+    subnet_id = azurerm_subnet.demo.id
+  }
 
   sku_name = "Consumption_0"
 
@@ -168,6 +206,8 @@ resource "azurerm_linux_web_app" "demo" {
   site_config {
     api_management_api_id = azurerm_api_management_api.demo.id
   }
+
+  virtual_network_subnet_id = azurerm_subnet.demo.id
 
   connection_string {
     name  = "cnTareas"
