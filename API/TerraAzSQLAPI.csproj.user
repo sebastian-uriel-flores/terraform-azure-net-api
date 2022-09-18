@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <NameOfLastUsedPublishProfile>C:\Users\sflor\Desarrollo\Portfolio\Terra_AZ_SQLDB\API\Properties\PublishProfiles\terra-az-sqldb-linuxwebapp - Zip Deploy.pubxml</NameOfLastUsedPublishProfile>
+    <NameOfLastUsedPublishProfile>C:\Users\sflor\Desarrollo\Portfolio\demo-tf-az-webapp-api\API\Properties\PublishProfiles\webapphox6wp - Zip Deploy.pubxml</NameOfLastUsedPublishProfile>
   </PropertyGroup>
 </Project>

@@ -132,7 +132,7 @@ resource "azurerm_api_management" "demo" {
     subnet_id = azurerm_subnet.demo.id
   }
 
-  sku_name = "Consumption_0"
+  sku_name = "Basic_0"
 
   tags = {
     Scope = "Demo"
