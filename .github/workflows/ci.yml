@@ -62,7 +62,7 @@ jobs:
       ARM_CLIENT_SECRET: ${{ secrets.TF_ARM_CLIENT_SECRET }}
       ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
       ARM_TENANT_ID: ${{ secrets.TF_ARM_TENANT_ID }}
-      AZURE_WEBAPP_NAME: your-app-name    # set this to your application's name
+      AZ_WEBAPP_NAME: demo-tf-az-webapp-api    # set this to your application's name
       API_PATH: '.\API'      # set this to the path to your web app project, defaults to the repository root
       IAC_PATH: '.\Infrastructure'
 
@@ -115,14 +115,17 @@ jobs:
       run: |
           dotnet restore
           dotnet build -c Release
-          dotnet publish -c Release -o '${{ env.API_PATH }}/myapp' 
+          dotnet publish -c Release -o '${{ env.API_PATH }}/out' 
+          
+    - uses: Azure/login@v1
+      with:
+          creds: '{"clientId":"${{ secrets.AZ_CLIENT_ID }}","clientSecret":"${{ secrets.AZ_CLIENT_SECRET }}","subscriptionId":"${{ secrets.AZ_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.AZ_TENANT_ID }}"}'
           
       # Deploy to Azure Web apps
     - name: 'Run Azure webapp deploy action using publish profile credentials'
       uses: azure/webapps-deploy@v2
       with: 
-          app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-          package: '${{ env.API_PATH }}/myapp'
+          app-name: '${{ env.AZ_WEBAPP_NAME }}' # Replace with your app name          
+          package: '${{ env.API_PATH }}/out'
       
     
