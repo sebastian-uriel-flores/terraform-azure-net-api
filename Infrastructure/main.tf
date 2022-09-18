@@ -24,7 +24,7 @@ provider "azurerm" {
 resource "random_string" "demo" {
   length  = 6
   special = false
-  upper   = false  
+  upper   = false
 }
 
 resource "azurerm_resource_group" "demo" {
