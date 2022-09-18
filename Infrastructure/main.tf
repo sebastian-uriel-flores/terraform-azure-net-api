@@ -4,6 +4,10 @@ terraform {
       source  = "hashicorp/azurerm"
       version = "=3.22.0"
     }
+    random = {
+      source = "hashicorp/random"
+      version = "2.3.1"
+    }
   }
   backend "azurerm" {
     resource_group_name  = "tf-backend-rg"
@@ -17,6 +21,11 @@ provider "azurerm" {
   features {}
 }
 
+resource "random_string" "demo" {
+  length           = 10
+  special          = false
+}
+
 resource "azurerm_resource_group" "demo" {
   name     = var.resource_group_name
   location = var.location
@@ -27,7 +36,7 @@ resource "azurerm_resource_group" "demo" {
 }
 
 resource "azurerm_storage_account" "demo" {
-  name                     = "sqlserverstorage"
+  name                     = "sqlserverstorage${random_string.demo.result}"
   resource_group_name      = azurerm_resource_group.demo.name
   location                 = azurerm_resource_group.demo.location
   account_tier             = "Standard"
