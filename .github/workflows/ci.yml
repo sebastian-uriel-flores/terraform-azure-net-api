@@ -24,7 +24,7 @@ jobs:
       IAC_PATH: 'Infrastructure'
       IAC_LOCATION: 'Brazil South'
       IAC_RESOURCE_GROUP_NAME: 'demo-resource-group'
-      IAC_WEBAPP_NAME: 'webappzwfu3p'  # set this to your application's name
+      IAC_WEBAPP_NAME: 'webapphox6wp'  # set this to your application's name
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
