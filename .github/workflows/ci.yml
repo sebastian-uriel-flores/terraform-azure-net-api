@@ -78,6 +78,9 @@ jobs:
         resource_name_suffix="$(terraform output -raw resource_name_suffix)"        
         echo "::set-output name=resource_name_suffix::$resource_name_suffix"
       working-directory: '${{ env.IAC_PATH }}'
+    
+    - name: Temp
+      run: echo "${{ steps.tfoutput.outputs.resource_name_suffix }}"
       
 
   dotnet:
