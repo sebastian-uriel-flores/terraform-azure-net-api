@@ -8,28 +8,29 @@ on:
 permissions:
   contents: read
 
+env:
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
+  ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
+  ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
+  ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
+  ARM_ACCESS_KEY: ${{ secrets.ARM_ACCOUNT_KEY }}
+
 jobs:
   terraform:
     name: 'Terraform'
     runs-on: ubuntu-latest
     environment: production
     env:
-      ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
-      ARM_CLIENT_SECRET: ${{ secrets.ARM_CLIENT_SECRET }}
-      ARM_SUBSCRIPTION_ID: ${{ secrets.ARM_SUBSCRIPTION_ID }}
-      ARM_TENANT_ID: ${{ secrets.ARM_TENANT_ID }}
-      ARM_ACCESS_KEY: ${{ secrets.ARM_ACCOUNT_KEY }}
-
-      API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
       IAC_PATH: 'Infrastructure'
       IAC_LOCATION: 'Brazil South'
-      IAC_RESOURCE_GROUP_NAME: 'demo-resource-group'
-      IAC_WEBAPP_NAME: 'webappkri4nd'  # set this to your application's name
+      IAC_RESOURCE_GROUP_NAME: 'demo-resource-group'      
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
+    outputs:
+        resource_name_suffix: ${{ steps.tfapply.outputs.resource_name_suffix }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -54,19 +55,36 @@ jobs:
 
     # Generates an execution plan for Terraform
     - name: Terraform Plan
-      run: terraform plan -out tfplan -input=false -var resource_group_name="${{ env.IAC_RESOURCE_GROUP_NAME }}" -var location="${{ env.IAC_LOCATION }}"
+      run: terraform plan -out tfplan -input=false
       working-directory: '${{ env.IAC_PATH }}'
       env:
+        TF_VAR_resource_group_name: '${{ env.IAC_RESOURCE_GROUP_NAME }}'
+        TF_VAR_location: '${{ env.IAC_LOCATION }}'
         TF_VAR_sqlserver_administrator_login: '${{ secrets.SQL_SERVER_ADMIN_USERNAME }}'
         TF_VAR_sqlserver_administrator_login_password: '${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}'
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
     - name: Terraform Apply
+      id: tfapply
       #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply -input=false tfplan 
+      run: |
+        terraform apply -input=false tfplan
+        $resource_name_suffix = terraform output -raw resource_name_suffix
+        echo "::set-output name=resource_name_suffix::$resource_name_suffix"
       working-directory: '${{ env.IAC_PATH }}'
       
+
+  dotnet:
+    name: 'DotNet'
+    runs-on: ubuntu-latest
+    environment: production
+    needs: terraform
+    env:
+      IAC_WEBAPP_NAME: '${{ needs.terraform.outputs.resource_name_suffix }}'  # set this to your application's name      
+      API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
+    steps:
+
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v2.1.0
       
@@ -88,5 +106,6 @@ jobs:
       with: 
           app-name: '${{ env.IAC_WEBAPP_NAME }}' # Replace with your app name          
           package: '${{ env.API_PATH }}/out'
+  
       
     

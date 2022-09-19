@@ -28,3 +28,8 @@
 #  description = "Azure Web App URL"
 #  value       = "${azurerm_linux_web_app.terra-az-sqldb.name}.azurewebsites.net"
 #}
+
+output "resource_name_suffix" {
+  description = "Suffix of the name of every resource"
+  value       = random_string.demo.result
+}
