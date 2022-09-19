@@ -71,17 +71,12 @@ jobs:
       run: terraform apply -input=false tfplan        
       working-directory: '${{ env.IAC_PATH }}'
     
+    # I had to use terraform-bin instead of terraform due to this issue:
+    # https://github.com/hashicorp/setup-terraform/issues/20
     - name: Terraform Outputs
-      id: tfoutput
-      #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: |
-        resource_name_suffix="$(terraform-bin output -raw resource_name_suffix)"        
-        echo "::set-output name=resource_name_suffix::$resource_name_suffix"
-      working-directory: '${{ env.IAC_PATH }}'
-    
-    - name: Temp
-      run: echo "${{ steps.tfoutput.outputs.resource_name_suffix }}"
-      
+      id: tfoutput      
+      run: echo "::set-output name=resource_name_suffix::$(terraform-bin output -raw resource_name_suffix)"
+      working-directory: '${{ env.IAC_PATH }}'      
 
   dotnet:
     name: 'DotNet'
@@ -89,7 +84,7 @@ jobs:
     environment: production
     needs: terraform
     env:
-      IAC_WEBAPP_NAME: '${{ needs.terraform.outputs.resource_name_suffix }}'  # set this to your application's name      
+      IAC_WEBAPP_NAME: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}'  # set this to your application's name      
       API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
     steps:
     # Checkout the repository to the GitHub Actions runner
