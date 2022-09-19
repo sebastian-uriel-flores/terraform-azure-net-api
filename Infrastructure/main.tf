@@ -200,9 +200,19 @@ resource "azurerm_linux_web_app" "demo" {
   location            = azurerm_service_plan.demo.location
   service_plan_id     = azurerm_service_plan.demo.id
 
+
   site_config {
-    always_on = false
+    always_on        = false
+    app_command_line = "dotnet run TerraAzSQLAPI.dll"
+    application_stack {
+      dotnet_version = "6.0"
+    }
+
     #  api_management_api_id = azurerm_api_management_api.demo.id
+  }
+  auth_settings {
+    enabled                       = true
+    unauthenticated_client_action = "AllowAnonymous"
   }
 
   #virtual_network_subnet_id = azurerm_subnet.demo.id
