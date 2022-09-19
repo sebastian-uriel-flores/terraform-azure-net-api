@@ -30,7 +30,7 @@ jobs:
       run:
         shell: bash
     outputs:
-        resource_name_suffix: ${{ steps.tfapply.outputs.resource_name_suffix }}
+        resource_name_suffix: ${{ steps.tfoutput.outputs.resource_name_suffix }}
 
     steps:
     # Checkout the repository to the GitHub Actions runner
@@ -68,10 +68,13 @@ jobs:
     - name: Terraform Apply
       id: tfapply
       #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: |
-        terraform apply -input=false tfplan
-        $resource_name_suffix = terraform output -raw resource_name_suffix
-        echo "::set-output name=resource_name_suffix::$resource_name_suffix"
+      run: terraform apply -input=false tfplan        
+      working-directory: '${{ env.IAC_PATH }}'
+    
+    - name: Terraform Outputs
+      id: tfoutput
+      #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
+      run: echo "::set-output name=resource_name_suffix::$(terraform output -raw resource_name_suffix)"
       working-directory: '${{ env.IAC_PATH }}'
       
 
