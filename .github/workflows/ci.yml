@@ -87,6 +87,9 @@ jobs:
       IAC_WEBAPP_NAME: '${{ needs.terraform.outputs.resource_name_suffix }}'  # set this to your application's name      
       API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
     steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3 
 
     - name: Setup .NET Core SDK
       uses: actions/setup-dotnet@v2.1.0
