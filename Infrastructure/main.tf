@@ -87,7 +87,7 @@ resource "azurerm_service_plan" "demo" {
   location            = azurerm_resource_group.demo.location
   resource_group_name = azurerm_resource_group.demo.name
   os_type             = "Linux"
-  sku_name            = "F1"
+  sku_name            = "B1"
 
   tags = {
     Scope = "Demo"
