@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using TerraAzSQLAPI;
 using TerraAzSQLAPI.Services;
 
@@ -21,6 +22,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+}
+
+// Migrate any database changes on startup (includes initial db creation)
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<TareasContext>();
+    dataContext.Database.Migrate();
 }
 
 app.UseHttpsRedirection();
