@@ -88,9 +88,6 @@ resource "azurerm_service_plan" "demo" {
   resource_group_name = azurerm_resource_group.demo.name
   os_type             = "Linux"
   sku_name            = "F1"
-  depends_on = [
-    azurerm_mssql_database.demo
-  ]
 
   tags = {
     Scope = "Demo"
