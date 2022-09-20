@@ -203,7 +203,7 @@ resource "azurerm_linux_web_app" "demo" {
 
   site_config {
     always_on        = false
-    app_command_line = "dotnet run TerraAzSQLAPI.dll"
+    app_command_line = "dotnet TerraAzSQLAPI.dll"
     application_stack {
       dotnet_version = "6.0"
     }
