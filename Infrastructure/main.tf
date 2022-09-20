@@ -61,6 +61,13 @@ resource "azurerm_mssql_server" "demo" {
   }
 }
 
+resource "azurerm_mssql_firewall_rule" "demo" {
+  name             = "sqlserverpublicaccess"
+  server_id        = azurerm_mssql_server.demo.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
+}
+
 resource "azurerm_mssql_database" "demo" {
   name           = "sqlserverdb${random_string.demo.result}"
   server_id      = azurerm_mssql_server.demo.id
@@ -81,6 +88,9 @@ resource "azurerm_service_plan" "demo" {
   resource_group_name = azurerm_resource_group.demo.name
   os_type             = "Linux"
   sku_name            = "F1"
+  depends_on = [
+    azurerm_mssql_database.demo
+  ]
 
   tags = {
     Scope = "Demo"
