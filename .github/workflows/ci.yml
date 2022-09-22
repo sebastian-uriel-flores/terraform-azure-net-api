@@ -113,5 +113,35 @@ jobs:
           app-name: '${{ env.IAC_WEBAPP_NAME }}' # Replace with your app name          
           package: '${{ env.API_PATH }}/out'
   
+  testing:
+    name: 'Test APIs'
+    runs-on: ubuntu-latest
+    environment: production
+    needs: dotnet
+    env:
+      IAC_WEBAPP_PROTOCOL: 'https'
+      IAC_WEBAPP_URL: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}.azurewebsites.net'  # set this to your application's name      
+      TESTING_PATH: 'Testing'      # set this to the path to your web app project, defaults to the repository root
+    steps:
+    # Checkout the repository to the GitHub Actions runner
+    - name: Checkout
+      uses: actions/checkout@v3 
       
+    - name: Update postman environment          
+      uses: cschleiden/replace-tokens@v1.1
+      with:        
+        tokenPrefix: '__'         
+        tokenSuffix: '__'         
+        files: '["${{ env.TESTING_PATH }}/environment.postman_environment"]'
+    
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v3.4.1      
+    
+    # Run dotnet build and publish
+    - name: newman install
+      run:  npm install -g newman
+      
+    - name: newman run tests
+      run:  newman run collection.postman_collection -e environment.postman_environment --reporters cli          
+      working-directory: '${{ env.TESTING_PATH }}'     
     
