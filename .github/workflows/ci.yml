@@ -117,7 +117,7 @@ jobs:
     name: 'Test APIs'
     runs-on: ubuntu-latest
     environment: production
-    needs: dotnet
+    needs: [terraform, dotnet]
     env:
       IAC_WEBAPP_PROTOCOL: 'https'
       IAC_WEBAPP_URL: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}.azurewebsites.net'  # set this to your application's name      
