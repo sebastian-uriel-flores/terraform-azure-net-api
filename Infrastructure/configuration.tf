@@ -10,7 +10,7 @@ variable "resource_group_name" {
   description = "Name of the resource group"
   type        = string
   sensitive   = false
-  default     = "resource-group"
+  default     = "demo-resource-group"
 }
 
 variable "sqlserver_administrator_login" {
