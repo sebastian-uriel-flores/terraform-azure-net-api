@@ -23,16 +23,28 @@ public class CategoriaController : ControllerBase
         logger.LogInformation("CategoriaController.Get");
         return Ok(categoriaService.Get());
     }
+
+    [HttpGet("{id:guid}")]
+    public async Task<IActionResult> GetById(Guid id)
+    {
+        logger.LogInformation("CategoriaController.GetById");        
+        var categoria = await categoriaService.Get(id);
+        
+        return categoria != null ? Ok(categoria) : NotFound();
+    }
     
     [HttpPost]
     public async Task<IActionResult> Save([FromBody] Categoria categoria)
     {
         logger.LogInformation("CategoriaController.Save");
-        await categoriaService.Save(categoria);
-        return Ok();
+        var createdResource = await categoriaService.Save(categoria);
+        var actionName = nameof(CategoriaController.GetById);
+        var controllerName = "categoria";
+        var routeValues = new { id = createdResource.CategoriaID };
+        return CreatedAtAction(actionName, controllerName, routeValues, createdResource);
     }
 
-    [HttpPut("{id}")]
+    [HttpPut("{id:guid}")]
     public async Task<IActionResult> Update(Guid id, [FromBody] Categoria categoria)
     {
         logger.LogInformation("CategoriaController.Update");
@@ -41,7 +53,7 @@ public class CategoriaController : ControllerBase
         return found ? Ok() : NotFound();
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{id:guid}")]
     public async Task<IActionResult> Delete(Guid id)
     {
         logger.LogInformation("CategoriaController.Delete");

@@ -11,6 +11,32 @@
 			"item": [
 				{
 					"name": "Add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response to have a body\r",
+									"pm.response.to.have.jsonBody();\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Validate response body to have a property named 'tareaID'\r",
+									"// with the ID of the new Tarea\r",
+									"pm.expect(responseJson).to.have.property('tareaID');\r",
+									"\r",
+									"// Validate response to have a header named 'location'\r",
+									"pm.response.to.have.header('location');\r",
+									"\r",
+									"// Validate response header 'lcoation' to include 'tareaID'\r",
+									"pm.expect(pm.response.headers.get('location')).to.contain(responseJson.tareaID);\r",
+									"\r",
+									"// If all the tests pass, store 'tareaID' in a temporal variable\r",
+									"pm.variables.set('tareaID', tareaID);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -32,6 +58,66 @@
 							"path": [
 								"api",
 								"tarea"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.variables.has('tareaID')) {\r",
+									"    let url = pm.request.url.toString();\r",
+									"    const searchParam = 'tarea/';\r",
+									"    const index = url.indexOf(searchParam);\r",
+									"    request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('tareaID');\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response to have a body\r",
+									"pm.response.to.have.jsonBody();\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if(pm.response.status == \"OK\") {\r",
+									"    // Validate response body to have a property named 'tareaID'\r",
+									"    // with the ID of the new Tarea\r",
+									"    pm.expect(responseJson).to.have.property('tareaID');\r",
+									"\r",
+									"    if(pm.variables.has('tareaID')) {   \r",
+									"        // Validate response to have 'tareaID' equals to the 'tareaID' \r",
+									"        // of the Tarea added in the Add API\r",
+									"        pm.expect(responseJson.tareaID).to.equals(pm.variables.get('tareaID'));\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/tarea/a7d36491-db44-48c7-a5cc-7c524819d4a0",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"tarea",
+								"a7d36491-db44-48c7-a5cc-7c524819d4a0"
 							]
 						}
 					},
@@ -112,6 +198,32 @@
 			"item": [
 				{
 					"name": "Add",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response to have a body\r",
+									"pm.response.to.have.jsonBody();\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"// Validate response body to have a property named 'categoriaID'\r",
+									"// with the ID of the new Categoria\r",
+									"pm.expect(responseJson).to.have.property('categoriaID');\r",
+									"\r",
+									"// Validate response to have a header named 'location'\r",
+									"pm.response.to.have.header('location');\r",
+									"\r",
+									"// Validate response header 'lcoation' to include 'categoriaID'\r",
+									"pm.expect(pm.response.headers.get('location')).to.contain(responseJson.categoriaID);\r",
+									"\r",
+									"// If all the tests pass, store 'categoriaID' in a temporal variable\r",
+									"pm.variables.set('categoriaID', categoriaID);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -133,6 +245,68 @@
 							"path": [
 								"api",
 								"categoria"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By Id",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"if(pm.variables.has('categoriaID')) {\r",
+									"    let url = pm.request.url.toString();\r",
+									"    const searchParam = 'categoria/';\r",
+									"    const index = url.indexOf(searchParam);\r",
+									"    request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('categoriaID');\r",
+									"}\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Validate response to have a body\r",
+									"pm.response.to.have.jsonBody();\r",
+									"const responseJson = pm.response.json();\r",
+									"\r",
+									"if(pm.response.status == \"OK\") {\r",
+									"    // Validate response body to have a property named 'categoriaID'\r",
+									"    // with the ID of the new Categoria\r",
+									"    pm.expect(responseJson).to.have.property('categoriaID');\r",
+									"\r",
+									"    if(pm.variables.has('categoriaID')) {   \r",
+									"\r",
+									"        // Validate response to have 'categoriaID' equals to the 'categoriaID' \r",
+									"        // of the Categoria added in the Add API\r",
+									"        pm.expect(responseJson.categoriaID).to.equals(pm.variables.get('categoriaID'));\r",
+									"    }\r",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{protocol}}://{{host}}/api/categoria/be6ebde4-c7da-4eb5-865d-c42ea21ad0a2/",
+							"protocol": "{{protocol}}",
+							"host": [
+								"{{host}}"
+							],
+							"path": [
+								"api",
+								"categoria",
+								"be6ebde4-c7da-4eb5-865d-c42ea21ad0a2",
+								""
 							]
 						}
 					},

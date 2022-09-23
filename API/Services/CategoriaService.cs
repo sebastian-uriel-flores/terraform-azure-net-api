@@ -6,7 +6,9 @@ public interface ICategoriaService
 {
     IEnumerable<Categoria> Get();
 
-    Task Save(Categoria categoria);
+    Task<Categoria?> Get(Guid id);
+
+    Task<Categoria> Save(Categoria categoria);
 
     Task<bool> Update(Guid id, Categoria categoria);
 
@@ -26,12 +28,19 @@ public class CategoriaService : ICategoriaService
         return context.Categorias;
     }
 
-    public async Task Save(Categoria categoria)
+    public async Task<Categoria?> Get(Guid id)
+    {
+        return await context.Categorias.FindAsync(id);
+    }
+
+    public async Task<Categoria> Save(Categoria categoria)
     {
         categoria.CategoriaID = Guid.NewGuid();
         categoria.Tareas = null;
         await context.AddAsync(categoria);
         await context.SaveChangesAsync();
+
+        return categoria;
     }
 
     public async Task<bool> Update(Guid id, Categoria categoria)

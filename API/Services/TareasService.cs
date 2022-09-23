@@ -7,7 +7,9 @@ public interface ITareasService
 {
     IEnumerable<Tarea> Get();
 
-    Task Save(Tarea tarea);
+    Task<Tarea?> Get(Guid id);
+
+    Task<Tarea> Save(Tarea tarea);
 
     Task<bool> Update(Guid id, Tarea tarea);
 
@@ -26,14 +28,22 @@ public class TareasService : ITareasService
     {
         return context.Tareas.Include(t => t.Categoria);
     }
+    
+    public async Task<Tarea?> Get(Guid id)
+    {
+        return await context.Tareas.Include(t => t.Categoria)
+            .FirstOrDefaultAsync(t => t.TareaID == id);
+    }
 
-    public async Task Save(Tarea tarea)
+    public async Task<Tarea> Save(Tarea tarea)
     {
         tarea.TareaID = Guid.NewGuid();
         tarea.FechaCreacion = DateTime.Now;        
         tarea.Categoria = null;
         await context.AddAsync(tarea);
         await context.SaveChangesAsync();
+
+        return tarea;
     }
 
     public async Task<bool> Update(Guid id, Tarea tarea)
