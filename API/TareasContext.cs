@@ -46,7 +46,7 @@ public class TareasContext : DbContext
             new Tarea
             {
                 TareaID = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
-                CategoriaId = Guid.Parse("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
+                CategoriaID = Guid.Parse("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
                 PrioridadTarea = Prioridad.Media,
                 Titulo = "Pago de servicios públicos",
                 FechaCreacion = DateTime.Now
@@ -54,7 +54,7 @@ public class TareasContext : DbContext
             new Tarea
             {
                 TareaID = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                CategoriaId = Guid.Parse("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
+                CategoriaID = Guid.Parse("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
                 PrioridadTarea = Prioridad.Alta,
                 Titulo = "Ir al dentista",
                 FechaCreacion = DateTime.Now
@@ -65,7 +65,7 @@ public class TareasContext : DbContext
         {
             tarea.ToTable("Tarea");
             tarea.HasKey(p => p.TareaID);
-            tarea.HasOne(p => p.Categoria).WithMany(p => p.Tareas).HasForeignKey(p => p.CategoriaId);
+            tarea.HasOne(p => p.Categoria).WithMany(p => p.Tareas).HasForeignKey(p => p.CategoriaID);
             tarea.Property(p => p.Titulo).IsRequired().HasMaxLength(200);
             tarea.Property(p => p.Descripcion);
             tarea.Property(p => p.PrioridadTarea);

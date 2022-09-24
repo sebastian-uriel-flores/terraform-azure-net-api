@@ -52,7 +52,7 @@ public class TareasService : ITareasService
 
         if(tareaActual != null)
         {
-            tareaActual.CategoriaId = tarea.CategoriaId;
+            tareaActual.CategoriaID = tarea.CategoriaID;
             tareaActual.Titulo = tarea.Titulo;
             tareaActual.Descripcion = tarea.Descripcion;
             tareaActual.PrioridadTarea = tarea.PrioridadTarea;

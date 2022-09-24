@@ -6,7 +6,7 @@ public class Tarea
 {
     public Guid TareaID { get; set; }
 
-    public Guid CategoriaId { get; set; }
+    public Guid CategoriaID { get; set; }
 
     public string Titulo { get; set; }
     
