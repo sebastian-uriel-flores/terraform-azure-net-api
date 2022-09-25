@@ -13,5 +13,5 @@ public class Category
     public int Weight { get; set; }
 
     [JsonIgnore]
-    public virtual ICollection<Job>? Jobs { get; set; }
+    public virtual ICollection<ToDo>? ToDos { get; set; }
 }

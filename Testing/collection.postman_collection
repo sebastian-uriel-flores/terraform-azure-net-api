@@ -24,7 +24,7 @@
 									"        pm.response.to.have.jsonBody();\r",
 									"        const responseCategory = pm.response.json();\r",
 									"\r",
-									"        // Validate response body to have a property named 'jobId'\r",
+									"        // Validate response body to have a property named 'toDoId'\r",
 									"        // with the ID of the new Tarea\r",
 									"        pm.expect(responseCategory).to.have.property('categoryId').not.to.equal(undefined);\r",
 									"        const { categoryId, name, description, weight } = responseCategory;\r",
@@ -218,8 +218,8 @@
 									"            pm.variables.set('category', responseCategory);\r",
 									"        });\r",
 									"        \r",
-									"        // Set the next endpoint to test: 'Add Job'\r",
-									"        postman.setNextRequest('Add Job');\r",
+									"        // Set the next endpoint to test: 'Add ToDo'\r",
+									"        postman.setNextRequest('Add ToDo');\r",
 									"    });\r",
 									"}"
 								],
@@ -333,27 +333,27 @@
 			]
 		},
 		{
-			"name": "Jobs",
+			"name": "ToDos",
 			"item": [
 				{
-					"name": "Add Job",
+					"name": "Add ToDo",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"if(pm.variables.has('category')) {\r",
-									"    pm.test(\"New job created\", () => {\r",
+									"    pm.test(\"New toDo created\", () => {\r",
 									"        pm.response.to.have.status(201);\r",
 									"\r",
 									"        // Validate response to have a body\r",
 									"        pm.response.to.have.jsonBody();\r",
-									"        const responseJob = pm.response.json();\r",
+									"        const responseToDo = pm.response.json();\r",
 									"\r",
-									"        // Validate response body to have a property named 'jobId'\r",
+									"        // Validate response body to have a property named 'toDoId'\r",
 									"        // with the ID of the new Tarea\r",
-									"        pm.expect(responseJob).to.have.property('jobId').not.to.equal(undefined);\r",
-									"        const { jobId, categoryId, title, description, priority } = responseJob;\r",
+									"        pm.expect(responseToDo).to.have.property('toDoId').not.to.equal(undefined);\r",
+									"        const { toDoId, categoryId, title, description, priority } = responseToDo;\r",
 									"            \r",
 									"        // Validate response body to have the same values sent in the request body    \r",
 									"        pm.expect( categoryId ).to.eq( pm.request.body.raw.categoryId );\r",
@@ -364,14 +364,14 @@
 									"        // Validate response to have a header named 'location'\r",
 									"        pm.response.to.have.header('location');\r",
 									"\r",
-									"        // Validate response header 'lcoation' to include 'jobId'\r",
-									"        pm.expect(pm.response.headers.get('location')).to.contain(jobId);\r",
+									"        // Validate response header 'lcoation' to include 'toDoId'\r",
+									"        pm.expect(pm.response.headers.get('location')).to.contain(toDoId);\r",
 									"\r",
-									"        // If all the tests pass, store 'job' in a temporal variable\r",
-									"        pm.variables.set('job', responseJob);\r",
+									"        // If all the tests pass, store 'toDo' in a temporal variable\r",
+									"        pm.variables.set('toDo', responseToDo);\r",
 									"\r",
-									"        // Set the next endpoint to test: 'Get Job by Id'\r",
-									"        postman.setNextRequest('Get Job by Id');\r",
+									"        // Set the next endpoint to test: 'Get ToDo by Id'\r",
+									"        postman.setNextRequest('Get ToDo by Id');\r",
 									"    });\r",
 									"}"
 								],
@@ -386,7 +386,7 @@
 									"    const body = {\r",
 									"        categoryId: pm.variables.get('category').categoryId,\r",
 									"        title: \"Test\",\r",
-									"        description: \"Test Job\",\r",
+									"        description: \"Test ToDo\",\r",
 									"        priority: 2\r",
 									"    }\r",
 									"\r",
@@ -410,31 +410,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/job",
+							"raw": "{{protocol}}://{{host}}/api/toDo",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"job"
+								"toDo"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Job by Id",
+					"name": "Get ToDo by Id",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('job')) {\r",
+									"if(pm.variables.has('toDo')) {\r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'job/';\r",
+									"    const searchParam = 'toDo/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('job').jobId;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('toDo').toDoId;\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -444,31 +444,31 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('job')) {\r",
-									"    pm.test(\"Retrieve the job previously created\", () => {\r",
+									"if(pm.variables.has('toDo')) {\r",
+									"    pm.test(\"Retrieve the toDo previously created\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
 									"        \r",
-									"        const job = pm.variables.get('job');\r",
+									"        const toDo = pm.variables.get('toDo');\r",
 									"\r",
 									"        // Validate response to have a body\r",
 									"        pm.response.to.have.jsonBody();    \r",
-									"        const responseJob = pm.response.json();\r",
+									"        const responseToDo = pm.response.json();\r",
 									"        \r",
-									"        // Validate response body to have a property named 'jobId'\r",
-									"        // with the ID of the new Job\r",
-									"        pm.expect(responseJob).to.have.property('jobId').not.equal(undefined);\r",
-									"        const { jobId, categoryId, title, description, priority } = responseJob;   \r",
+									"        // Validate response body to have a property named 'toDoId'\r",
+									"        // with the ID of the new ToDo\r",
+									"        pm.expect(responseToDo).to.have.property('toDoId').not.equal(undefined);\r",
+									"        const { toDoId, categoryId, title, description, priority } = responseToDo;   \r",
 									"\r",
 									"        // Validate response to have a body equals to the 'category'\r",
-									"        // created with the Add Job API\r",
-									"        pm.expect( jobId ).to.eq( job.jobId );\r",
-									"        pm.expect( categoryId ).to.eq( job.categoryId );\r",
-									"        pm.expect( title ).to.eq( job.title );\r",
-									"        pm.expect( description ).to.eq( job.description );\r",
-									"        pm.expect( priority ).to.eq( job.priority );\r",
+									"        // created with the Add ToDo API\r",
+									"        pm.expect( toDoId ).to.eq( toDo.toDoId );\r",
+									"        pm.expect( categoryId ).to.eq( toDo.categoryId );\r",
+									"        pm.expect( title ).to.eq( toDo.title );\r",
+									"        pm.expect( description ).to.eq( toDo.description );\r",
+									"        pm.expect( priority ).to.eq( toDo.priority );\r",
 									"\r",
-									"        // Set the next endpoint to test: 'Modify Job'\r",
-									"        postman.setNextRequest('Modify Job');\r",
+									"        // Set the next endpoint to test: 'Modify ToDo'\r",
+									"        postman.setNextRequest('Modify ToDo');\r",
 									"    });\r",
 									"}"
 								],
@@ -480,14 +480,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/job/f91144d4-0137-429a-8d24-abe92aa5c600",
+							"raw": "{{protocol}}://{{host}}/api/toDo/f91144d4-0137-429a-8d24-abe92aa5c600",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"job",
+								"toDo",
 								"f91144d4-0137-429a-8d24-abe92aa5c600"
 							]
 						}
@@ -495,22 +495,22 @@
 					"response": []
 				},
 				{
-					"name": "Modify Job",
+					"name": "Modify ToDo",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('job')) {   \r",
+									"if(pm.variables.has('toDo')) {   \r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'job/';\r",
+									"    const searchParam = 'toDo/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('job').jobId;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('toDo').toDoId;\r",
 									"    \r",
 									"    const body = {\r",
-									"        categoryId: pm.variables.get('job').categoryId,\r",
+									"        categoryId: pm.variables.get('toDo').categoryId,\r",
 									"        title: \"Test 2\",\r",
-									"        description: \"Test Job 2\",\r",
+									"        description: \"Test ToDo 2\",\r",
 									"        priority: 1\r",
 									"    }\r",
 									"    \r",
@@ -524,32 +524,32 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('job')) {\r",
-									"    pm.test(\"Job updated successfully\", () => {\r",
+									"if(pm.variables.has('toDo')) {\r",
+									"    pm.test(\"ToDo updated successfully\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
 									"\r",
-									"        const sentJob = { jobId: pm.variables.get('job').jobId, ...pm.request.body.raw };    \r",
+									"        const sentToDo = { toDoId: pm.variables.get('toDo').toDoId, ...pm.request.body.raw };    \r",
 									"\r",
-									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/job/${sentJob.jobId}`, function (err, response) {\r",
+									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/toDo/${sentToDo.toDoId}`, function (err, response) {\r",
 									"            pm.expect(response.status).to.equal(\"OK\");        \r",
 									"\r",
-									"            const responseJob = response.json();\r",
-									"            const { jobId, categoryId, title, description, priority } = responseJob;\r",
+									"            const responseToDo = response.json();\r",
+									"            const { toDoId, categoryId, title, description, priority } = responseToDo;\r",
 									"\r",
-									"            // Validate that the job has been modified in the database \r",
+									"            // Validate that the toDo has been modified in the database \r",
 									"            // and that we are retrieving the new values in the GET API\r",
-									"            pm.expect( jobId ).to.eq( sentJob.jobId );\r",
-									"            pm.expect( categoryId ).to.eq( sentJob.categoryId );\r",
-									"            pm.expect( title ).to.eq( sentJob.title );\r",
-									"            pm.expect( description ).to.eq( sentJob.description );\r",
-									"            pm.expect( priority ).to.eq( sentJob.priority );        \r",
+									"            pm.expect( toDoId ).to.eq( sentToDo.toDoId );\r",
+									"            pm.expect( categoryId ).to.eq( sentToDo.categoryId );\r",
+									"            pm.expect( title ).to.eq( sentToDo.title );\r",
+									"            pm.expect( description ).to.eq( sentToDo.description );\r",
+									"            pm.expect( priority ).to.eq( sentToDo.priority );        \r",
 									"\r",
-									"            // If all the tests pass, update 'job' variable with the modified values\r",
-									"            pm.variables.set('job', responseJob);\r",
+									"            // If all the tests pass, update 'toDo' variable with the modified values\r",
+									"            pm.variables.set('toDo', responseToDo);\r",
 									"        });\r",
 									"        \r",
-									"        // Set the next endpoint to test: 'Add Job'\r",
-									"        postman.setNextRequest('Delete Job');\r",
+									"        // Set the next endpoint to test: 'Add ToDo'\r",
+									"        postman.setNextRequest('Delete ToDo');\r",
 									"    });\r",
 									"}"
 								],
@@ -570,14 +570,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/job/e2d45cc2-bf86-45ec-8466-421ad930d222",
+							"raw": "{{protocol}}://{{host}}/api/toDo/e2d45cc2-bf86-45ec-8466-421ad930d222",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"job",
+								"toDo",
 								"e2d45cc2-bf86-45ec-8466-421ad930d222"
 							]
 						}
@@ -585,17 +585,17 @@
 					"response": []
 				},
 				{
-					"name": "Delete Job",
+					"name": "Delete ToDo",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('job')) {   \r",
+									"if(pm.variables.has('toDo')) {   \r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'job/';\r",
+									"    const searchParam = 'toDo/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('job').jobId;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('toDo').toDoId;\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -605,16 +605,16 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('job')) {\r",
-									"    pm.test(\"Job deleted successfully\", () => {\r",
+									"if(pm.variables.has('toDo')) {\r",
+									"    pm.test(\"ToDo deleted successfully\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
-									"        const { jobId } = pm.variables.get('job');\r",
+									"        const { toDoId } = pm.variables.get('toDo');\r",
 									"\r",
-									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/job/${ jobId }`, function (err, response) {\r",
+									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/toDo/${ toDoId }`, function (err, response) {\r",
 									"            pm.expect(response.status).to.equal(\"Not Found\");\r",
 									"\r",
-									"            // If all the tests pass, update 'job' variable\r",
-									"            pm.variables.unset('job');\r",
+									"            // If all the tests pass, update 'toDo' variable\r",
+									"            pm.variables.unset('toDo');\r",
 									"        });\r",
 									"\r",
 									"        postman.setNextRequest('Delete Category');\r",
@@ -629,14 +629,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/job/f2ca0bec-88ea-42f2-99db-fc1d36e84f01",
+							"raw": "{{protocol}}://{{host}}/api/toDo/f2ca0bec-88ea-42f2-99db-fc1d36e84f01",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"job",
+								"toDo",
 								"f2ca0bec-88ea-42f2-99db-fc1d36e84f01"
 							]
 						}
@@ -644,19 +644,19 @@
 					"response": []
 				},
 				{
-					"name": "Get All Jobs",
+					"name": "Get All ToDos",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/job",
+							"raw": "{{protocol}}://{{host}}/api/toDo",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"job"
+								"toDo"
 							]
 						}
 					},

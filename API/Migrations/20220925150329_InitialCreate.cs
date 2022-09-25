@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DemoAPIAzure.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,10 +24,10 @@ namespace DemoAPIAzure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Job",
+                name: "ToDo",
                 columns: table => new
                 {
-                    JobId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ToDoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CategoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -36,9 +36,9 @@ namespace DemoAPIAzure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Job", x => x.JobId);
+                    table.PrimaryKey("PK_ToDo", x => x.ToDoId);
                     table.ForeignKey(
-                        name: "FK_Job_Category_CategoryId",
+                        name: "FK_ToDo_Category_CategoryId",
                         column: x => x.CategoryId,
                         principalTable: "Category",
                         principalColumn: "CategoryId",
@@ -56,27 +56,27 @@ namespace DemoAPIAzure.Migrations
                 values: new object[] { new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), null, "Platzi courses to do", 50 });
 
             migrationBuilder.InsertData(
-                table: "Job",
-                columns: new[] { "JobId", "CategoryId", "CreationDate", "Description", "Priority", "Title" },
+                table: "ToDo",
+                columns: new[] { "ToDoId", "CategoryId", "CreationDate", "Description", "Priority", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2936), null, 1, "Milk" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2967), null, 2, "Dog food" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2975), null, 2, "Kubernetes" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2984), null, 2, "New Relic" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2989), null, 2, "Azure Databases" }
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8302), null, 1, "Milk" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8331), null, 2, "Dog food" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8337), null, 2, "Kubernetes" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8344), null, 2, "New Relic" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8348), null, 2, "Azure Databases" }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Job_CategoryId",
-                table: "Job",
+                name: "IX_ToDo_CategoryId",
+                table: "ToDo",
                 column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Job");
+                name: "ToDo");
 
             migrationBuilder.DropTable(
                 name: "Category");

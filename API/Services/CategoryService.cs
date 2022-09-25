@@ -16,9 +16,9 @@ public interface ICategoryService
 }
 public class CategoryService : ICategoryService
 {
-    JobContext context;
+    ToDoContext context;
 
-    public CategoryService(JobContext dbContext)
+    public CategoryService(ToDoContext dbContext)
     {
         this.context = dbContext;
     }
@@ -36,7 +36,7 @@ public class CategoryService : ICategoryService
     public async Task<Category> Save(Category category)
     {
         category.CategoryId = Guid.NewGuid();
-        category.Jobs = null;
+        category.ToDos = null;
         await context.AddAsync(category);
         await context.SaveChangesAsync();
 

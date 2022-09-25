@@ -3,13 +3,13 @@ using DemoAPIAzure.Models;
 
 namespace DemoAPIAzure;
 
-public class JobContext : DbContext
+public class ToDoContext : DbContext
 {
     public DbSet<Category> Categories { get; set; }
-    public DbSet<Job> Jobs { get; set; }
+    public DbSet<ToDo> ToDos { get; set; }
 
     
-    public JobContext(DbContextOptions<JobContext> options) : base(options) { }
+    public ToDoContext(DbContextOptions<ToDoContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -44,61 +44,61 @@ public class JobContext : DbContext
         });
 
         // Tareas
-        var jobsInit = new List<Job>
+        var toDosInit = new List<ToDo>
         {
-            new Job
+            new ToDo
             {
-                JobId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"),
+                ToDoId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"),
                 CategoryId = guid1,
-                Priority = JobPriority.Middle,
+                Priority = ToDoPriority.Middle,
                 Title = "Milk",
                 CreationDate = DateTime.Now
             },
-            new Job
+            new ToDo
             {
-                JobId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
+                ToDoId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
                 CategoryId = guid1,
-                Priority = JobPriority.High,
+                Priority = ToDoPriority.High,
                 Title = "Dog food",
                 CreationDate = DateTime.Now
             },
-            new Job
+            new ToDo
             {
-                JobId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
+                ToDoId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
                 CategoryId = guid2,
-                Priority = JobPriority.High,
+                Priority = ToDoPriority.High,
                 Title = "Kubernetes",
                 CreationDate = DateTime.Now
             },
-            new Job
+            new ToDo
             {
-                JobId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"),
+                ToDoId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"),
                 CategoryId = guid2,
-                Priority = JobPriority.High,
+                Priority = ToDoPriority.High,
                 Title = "New Relic",
                 CreationDate = DateTime.Now
             },
-            new Job
+            new ToDo
             {
-                JobId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"),
+                ToDoId = Guid.Parse("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"),
                 CategoryId = guid2,
-                Priority = JobPriority.High,
+                Priority = ToDoPriority.High,
                 Title = "Azure Databases",
                 CreationDate = DateTime.Now
             }
         };
 
-        modelBuilder.Entity<Job>(job => 
+        modelBuilder.Entity<ToDo>(toDo => 
         {
-            job.ToTable("Job");
-            job.HasKey(p => p.JobId);
-            job.HasOne(p => p.Category).WithMany(p => p.Jobs).HasForeignKey(p => p.CategoryId);
-            job.Property(p => p.Title).IsRequired().HasMaxLength(200);
-            job.Property(p => p.Description);
-            job.Property(p => p.Priority);
-            job.Property(p => p.CreationDate);            
+            toDo.ToTable("ToDo");
+            toDo.HasKey(p => p.ToDoId);
+            toDo.HasOne(p => p.Category).WithMany(p => p.ToDos).HasForeignKey(p => p.CategoryId);
+            toDo.Property(p => p.Title).IsRequired().HasMaxLength(200);
+            toDo.Property(p => p.Description);
+            toDo.Property(p => p.Priority);
+            toDo.Property(p => p.CreationDate);            
 
-            job.HasData(jobsInit);
+            toDo.HasData(toDosInit);
         });
     }
 }

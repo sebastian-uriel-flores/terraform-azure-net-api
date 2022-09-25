@@ -1,8 +1,8 @@
 namespace DemoAPIAzure.Models;
 
-public class Job
+public class ToDo
 {
-    public Guid JobId { get; set; }
+    public Guid ToDoId { get; set; }
 
     public Guid CategoryId { get; set; }
 
@@ -10,14 +10,14 @@ public class Job
     
     public string? Description { get; set; }
 
-    public JobPriority Priority { get; set; }
+    public ToDoPriority Priority { get; set; }
 
     public DateTime CreationDate { get; set; }
     
     public virtual Category? Category { get; set; }
 }
 
-public enum JobPriority
+public enum ToDoPriority
 {
     Low,
     Middle,

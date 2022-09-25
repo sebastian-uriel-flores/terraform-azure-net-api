@@ -98,7 +98,7 @@ resource "azurerm_linux_web_app" "demo" {
   }
 
   connection_string {
-    name  = "cnJobs"
+    name  = "cnToDos"
     type  = "SQLAzure"
     value = "Server=tcp:${azurerm_mssql_server.demo.fully_qualified_domain_name},1433;Initial Catalog=${azurerm_mssql_database.demo.name};User Id=${azurerm_mssql_server.demo.administrator_login};Password=${azurerm_mssql_server.demo.administrator_login_password};Persist Security Info=False;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }

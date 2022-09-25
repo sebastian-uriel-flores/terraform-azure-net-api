@@ -11,9 +11,9 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IHealthService, HealthService>();
-builder.Services.AddSqlServer<JobContext>(builder.Configuration.GetConnectionString("cnJobs"));
+builder.Services.AddSqlServer<ToDoContext>(builder.Configuration.GetConnectionString("cnToDos"));
 builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IJobService, JobService>();
+builder.Services.AddScoped<IToDoService, ToDoService>();
 
 var app = builder.Build();
 
@@ -27,7 +27,7 @@ if (app.Environment.IsDevelopment())
 // Migrate any database changes on startup (includes initial db creation)
 using (var scope = app.Services.CreateScope())
 {
-    var dataContext = scope.ServiceProvider.GetRequiredService<JobContext>();
+    var dataContext = scope.ServiceProvider.GetRequiredService<ToDoContext>();
     dataContext.Database.Migrate();
 }
 

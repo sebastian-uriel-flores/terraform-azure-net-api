@@ -10,9 +10,9 @@ public class HealthController : ControllerBase
     ILogger<HealthController> logger;
     IHealthService healthService;
 
-    JobContext dbContext;
+    ToDoContext dbContext;
 
-    public HealthController(ILogger<HealthController> logger, IHealthService healthService, JobContext db)
+    public HealthController(ILogger<HealthController> logger, IHealthService healthService, ToDoContext db)
     {
         this.logger = logger;
         this.healthService = healthService;

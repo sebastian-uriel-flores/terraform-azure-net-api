@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DemoAPIAzure.Migrations
 {
-    [DbContext(typeof(JobContext))]
-    partial class JobContextModelSnapshot : ModelSnapshot
+    [DbContext(typeof(ToDoContext))]
+    partial class ToDoContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
@@ -58,9 +58,9 @@ namespace DemoAPIAzure.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DemoAPIAzure.Models.Job", b =>
+            modelBuilder.Entity("DemoAPIAzure.Models.ToDo", b =>
                 {
-                    b.Property<Guid>("JobId")
+                    b.Property<Guid>("ToDoId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
@@ -81,59 +81,59 @@ namespace DemoAPIAzure.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.HasKey("JobId");
+                    b.HasKey("ToDoId");
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("Job", (string)null);
+                    b.ToTable("ToDo", (string)null);
 
                     b.HasData(
                         new
                         {
-                            JobId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"),
+                            ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
-                            CreationDate = new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2936),
+                            CreationDate = new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8302),
                             Priority = 1,
                             Title = "Milk"
                         },
                         new
                         {
-                            JobId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
+                            ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
-                            CreationDate = new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2967),
+                            CreationDate = new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8331),
                             Priority = 2,
                             Title = "Dog food"
                         },
                         new
                         {
-                            JobId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
+                            ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                            CreationDate = new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2975),
+                            CreationDate = new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8337),
                             Priority = 2,
                             Title = "Kubernetes"
                         },
                         new
                         {
-                            JobId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"),
+                            ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                            CreationDate = new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2984),
+                            CreationDate = new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8344),
                             Priority = 2,
                             Title = "New Relic"
                         },
                         new
                         {
-                            JobId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"),
+                            ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                            CreationDate = new DateTime(2022, 9, 24, 21, 45, 14, 613, DateTimeKind.Local).AddTicks(2989),
+                            CreationDate = new DateTime(2022, 9, 25, 12, 3, 28, 518, DateTimeKind.Local).AddTicks(8348),
                             Priority = 2,
                             Title = "Azure Databases"
                         });
                 });
 
-            modelBuilder.Entity("DemoAPIAzure.Models.Job", b =>
+            modelBuilder.Entity("DemoAPIAzure.Models.ToDo", b =>
                 {
                     b.HasOne("DemoAPIAzure.Models.Category", "Category")
-                        .WithMany("Jobs")
+                        .WithMany("ToDos")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -143,7 +143,7 @@ namespace DemoAPIAzure.Migrations
 
             modelBuilder.Entity("DemoAPIAzure.Models.Category", b =>
                 {
-                    b.Navigation("Jobs");
+                    b.Navigation("ToDos");
                 });
 #pragma warning restore 612, 618
         }
