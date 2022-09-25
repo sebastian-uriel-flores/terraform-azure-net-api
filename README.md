@@ -109,7 +109,9 @@ Now, touch the **Create API Token**  button and write a name for the API Token:
 ![image](https://user-images.githubusercontent.com/5461235/192148683-eb844f9c-1c3d-4e01-9722-cb2dc220fcbb.png)
 ![image](https://user-images.githubusercontent.com/5461235/192148716-84c1c8ad-aed5-4fd4-a3c6-96d8480ece2f.png)
 
+
 Next, you will see a Token like this:
+
 ![image](https://user-images.githubusercontent.com/5461235/192148763-aff20712-1023-4805-97fe-b84ab2a12e45.png)
 
 You have to copy this Token and store it as a new GitHub Secret with the name of **TF_API_TOKEN**.
