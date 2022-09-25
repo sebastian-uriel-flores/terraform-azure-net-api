@@ -26,3 +26,9 @@ variable "sqlserver_administrator_login_password" {
   sensitive   = true
   nullable    = false
 }
+
+variable "webapp_project_name" {
+  description = "Name of the .NET Project that has to be run"
+  type        = string  
+  nullable    = false
+}

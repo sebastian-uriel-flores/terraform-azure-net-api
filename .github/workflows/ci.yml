@@ -24,6 +24,7 @@ jobs:
       IAC_PATH: 'Infrastructure'
       IAC_LOCATION: 'Brazil South'
       IAC_RESOURCE_GROUP_NAME: 'demo-resource-group'      
+      API_PROJECT_NAME: 'DemoAPIAzure'
 
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
@@ -62,6 +63,7 @@ jobs:
         TF_VAR_location: '${{ env.IAC_LOCATION }}'
         TF_VAR_sqlserver_administrator_login: '${{ secrets.SQL_SERVER_ADMIN_USERNAME }}'
         TF_VAR_sqlserver_administrator_login_password: '${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}'
+        TF_VAR_webapp_project_name: '${{ secrets.API_PROJECT_NAME }}'
 
       # On push to "main", build or change infrastructure according to Terraform configuration files
       # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
