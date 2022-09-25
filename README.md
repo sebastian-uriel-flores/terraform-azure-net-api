@@ -111,3 +111,12 @@ At the end of this step, you must have the following things created:
 - [Store Terraform State in Azure Storage](https://learn.microsoft.com/es-es/azure/developer/terraform/store-state-in-azure-storage?tabs=powershell)
 - [Using Terraform outputs](https://www.terraform.io/cli/commands/output)
 - [GitHub Actions - Defining outputs for jobs](https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs)
+
+## Platzi Courses
+
+- [Introduction to Azure](https://platzi.com/cursos/introduccion-azure/)
+- [Storage in Azure](https://platzi.com/cursos/almacenamiento-azure/)
+- [Web Apps and Logic Apps in Azure](https://platzi.com/cursos/web-apps/)
+- [Azure Active Directory](https://platzi.com/cursos/azure-active-directory/)
+- [Infrastructure as Code with Terraform](https://platzi.com/cursos/devops-terraform/)
+- [Introduction to the Terminal](https://platzi.com/cursos/terminal/)
