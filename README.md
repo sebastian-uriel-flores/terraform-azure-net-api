@@ -81,25 +81,6 @@ To continue, you must create three GitHub Sectrets, to store the new Resource Gr
 - **TF_BACKEND_RESOURCE_GROUP_NAME**: [The Resource Group Name created for the Terraform Backend]
 - **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [The Name of the Storage Account created for the Terraform Backend]
 
-### Verify the Creations
-At the end of this step, you must have the following things created:
-
-**Azure:**
-- Dedicated Subscription for all the Resources.
-- A dedicated Resource Group inside the Subscription, for the Terraform backend.
-- A Storage Account created inside the Resource Group, to be used by the Terraform client.
-- A Blob Container inside the Storage Account, to store the Terraform client state.
-- A Service Principal in your Tenant who give GitHub Actions the permissions to interact with your dedicated Azure Subscription.
-
-**GitHub Secrets:**
-- **ARM_CLIENT_ID:** [clientId]
-- **ARM_CLIENT_SECRET:** [clientSecret]
-- **ARM_SUBSCRIPTION_ID:** [subscriptionID]
-- **ARM_TENANT_ID:** [tenantId]
-- **ARM_ACCOUNT_KEY**: [The Account Key of the Storage Account created for the Terraform Backend]
-- **TF_BACKEND_RESOURCE_GROUP_NAME**: [The Resource Group Name created for the Terraform Backend]
-- **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [The Name of the Storage Account created for the Terraform Backend]
-
 ## 2. Setting up your Terraform client in GitHub Actions
 
 Before the GitHub Actions workflow can issue a Terraform Client, you must create a Terraform API Token.
@@ -119,6 +100,31 @@ You have to copy this Token and store it as a new GitHub Secret with the name of
 ## 3. Latest settings
 
 I have to request you to create two more extra GitHub Secrets. They are intended to be used in the creation of the Azure SQL Database:
+- **SQL_SERVER_ADMIN_USERNAME:** [The username of your Azure SQL Database]
+- **SQL_SERVER_ADMIN_PASSWORD:** [The password of your Azure SQL Database]
+
+## 4. Verify the Creations
+At the end, you should have the following things created:
+
+**Azure:**
+- Dedicated Subscription for all the Resources.
+- A dedicated Resource Group inside the Subscription, for the Terraform backend.
+- A Storage Account created inside the Resource Group, to be used by the Terraform client.
+- A Blob Container inside the Storage Account, to store the Terraform client state.
+- A Service Principal in your Tenant who give GitHub Actions the permissions to interact with your dedicated Azure Subscription.
+
+**Terraform Cloud:**
+-  A Terraform API Token.
+
+**GitHub Secrets:**
+- **ARM_CLIENT_ID:** [clientId]
+- **ARM_CLIENT_SECRET:** [clientSecret]
+- **ARM_SUBSCRIPTION_ID:** [subscriptionID]
+- **ARM_TENANT_ID:** [tenantId]
+- **ARM_ACCOUNT_KEY**: [The Account Key of the Storage Account created for the Terraform Backend]
+- **TF_BACKEND_RESOURCE_GROUP_NAME**: [The Resource Group Name created for the Terraform Backend]
+- **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [The Name of the Storage Account created for the Terraform Backend]
+- **TF_API_TOKEN**: [Terraform Cloud API Token]
 - **SQL_SERVER_ADMIN_USERNAME:** [The username of your Azure SQL Database]
 - **SQL_SERVER_ADMIN_PASSWORD:** [The password of your Azure SQL Database]
 ---
