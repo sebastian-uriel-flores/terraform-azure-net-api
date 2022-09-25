@@ -24,21 +24,21 @@
 									"        pm.response.to.have.jsonBody();\r",
 									"        const responseCategory = pm.response.json();\r",
 									"\r",
-									"        // Validate response body to have a property named 'tareaID'\r",
+									"        // Validate response body to have a property named 'jobId'\r",
 									"        // with the ID of the new Tarea\r",
-									"        pm.expect(responseCategory).to.have.property('categoriaID').not.to.equal(undefined);\r",
-									"        const { categoriaID, nombre, descripcion, peso } = responseCategory;\r",
+									"        pm.expect(responseCategory).to.have.property('categoryId').not.to.equal(undefined);\r",
+									"        const { categoryId, name, description, weight } = responseCategory;\r",
 									"            \r",
 									"        // Validate response body to have the same values sent in the request body        \r",
-									"        pm.expect( nombre ).to.eq( pm.request.body.raw.nombre );\r",
-									"        pm.expect( descripcion ).to.eq( pm.request.body.raw.descripcion );\r",
-									"        pm.expect( peso ).to.eq( pm.request.body.raw.peso );    \r",
+									"        pm.expect( name ).to.eq( pm.request.body.raw.name );\r",
+									"        pm.expect( description ).to.eq( pm.request.body.raw.description );\r",
+									"        pm.expect( weight ).to.eq( pm.request.body.raw.weight );    \r",
 									"\r",
 									"        // Validate response to have a header named 'location'\r",
 									"        pm.response.to.have.header('location');\r",
 									"\r",
-									"        // Validate response header 'lcoation' to include 'categoriaID'\r",
-									"        pm.expect(pm.response.headers.get('location')).to.contain(categoriaID);\r",
+									"        // Validate response header 'lcoation' to include 'categoryId'\r",
+									"        pm.expect(pm.response.headers.get('location')).to.contain(categoryId);\r",
 									"\r",
 									"        // If all the tests pass, store 'category' in a temporal variable\r",
 									"        pm.variables.set('category', responseCategory);\r",
@@ -57,9 +57,9 @@
 								"exec": [
 									"if(pm.environment.has('test') && pm.environment.get('test') == 1) {\r",
 									"    const body = {\r",
-									"        nombre: 'Categoría de Prueba',\r",
-									"        descripcion: \"Descripción de prueba\",\r",
-									"        peso: 50\r",
+									"        name: 'Test',\r",
+									"        description: \"Category to test\",\r",
+									"        weight: 50\r",
 									"    }\r",
 									"\r",
 									"    pm.request.body.raw = body;\r",
@@ -74,7 +74,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Prueba\",\r\n    \"descripcion\": \"Mi categoria\",\r\n    \"peso\": 50\r\n}",
+							"raw": "{\r\n    \"name\": \"Things to learn\",\r\n    \"description\": \"All the things I want to learn in my life\",\r\n    \"weight\": 80\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -82,14 +82,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/categoria",
+							"raw": "{{protocol}}://{{host}}/api/category",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"categoria"
+								"category"
 							]
 						}
 					},
@@ -104,9 +104,9 @@
 								"exec": [
 									"if(pm.variables.has('category')) {\r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'categoria/';\r",
+									"    const searchParam = 'category/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('category').categoriaID;    \r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('category').categoryId;    \r",
 									"}\r",
 									""
 								],
@@ -127,17 +127,17 @@
 									"        pm.response.to.have.jsonBody();    \r",
 									"        const responseCategory = pm.response.json();\r",
 									"        \r",
-									"        // Validate response body to have a property named 'categoriaID'\r",
+									"        // Validate response body to have a property named 'categoryId'\r",
 									"        // with the ID of the new Category\r",
-									"        pm.expect(responseCategory).to.have.property('categoriaID').not.equal(undefined);\r",
-									"        const { categoriaID, nombre, descripcion, peso } = responseCategory;   \r",
+									"        pm.expect(responseCategory).to.have.property('categoryId').not.equal(undefined);\r",
+									"        const { categoryId, name, description, weight } = responseCategory;   \r",
 									"\r",
 									"        // Validate response to have a body equals to the 'category'\r",
 									"        // created with the Add Category API\r",
-									"        pm.expect( categoriaID ).to.eq( category.categoriaID );\r",
-									"        pm.expect( nombre ).to.eq( category.nombre );\r",
-									"        pm.expect( descripcion ).to.eq( category.descripcion );\r",
-									"        pm.expect( peso ).to.eq( category.peso );\r",
+									"        pm.expect( categoryId ).to.eq( category.categoryId );\r",
+									"        pm.expect( name ).to.eq( category.name );\r",
+									"        pm.expect( description ).to.eq( category.description );\r",
+									"        pm.expect( weight ).to.eq( category.weight );\r",
 									"\r",
 									"        // Set the next endpoint to test: 'Modify Category'\r",
 									"        postman.setNextRequest('Modify Category');\r",
@@ -152,14 +152,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/categoria/824d1bd5-9bc9-4ec5-aa11-6d6ebbcb5e67",
+							"raw": "{{protocol}}://{{host}}/api/category/824d1bd5-9bc9-4ec5-aa11-6d6ebbcb5e67",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"categoria",
+								"category",
 								"824d1bd5-9bc9-4ec5-aa11-6d6ebbcb5e67"
 							]
 						}
@@ -175,14 +175,14 @@
 								"exec": [
 									"if(pm.variables.has('category')) {   \r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'categoria/';\r",
+									"    const searchParam = 'category/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('category').categoriaID;    \r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('category').categoryId;    \r",
 									"    \r",
 									"    const body = {\r",
-									"        nombre: 'Categoría de Prueba 2',\r",
-									"        descripcion: \"Descripción de prueba 2\",\r",
-									"        peso: 52\r",
+									"        name: 'Test 2',\r",
+									"        description: \"Category to test 2\",\r",
+									"        weight: 52\r",
 									"    }\r",
 									"    \r",
 									"    pm.request.body.raw = body;\r",
@@ -199,20 +199,20 @@
 									"    pm.test(\"Category modificated successfully\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
 									"\r",
-									"        const sentCategory = { categoriaID: pm.variables.get('category').categoriaID, ...pm.request.body.raw };        \r",
+									"        const sentCategory = { categoryId: pm.variables.get('category').categoryId, ...pm.request.body.raw };        \r",
 									"\r",
-									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/categoria/${sentCategory.categoriaID}`, function (err, response) {\r",
+									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/category/${sentCategory.categoryId}`, function (err, response) {\r",
 									"            pm.expect(response.status).to.equal(\"OK\");        \r",
 									"\r",
 									"            const responseCategory = response.json();\r",
-									"            const { categoriaID, nombre, descripcion, peso } = responseCategory;\r",
+									"            const { categoryId, name, description, weight } = responseCategory;\r",
 									"\r",
 									"            // Validate that the category has been modified in the database \r",
 									"            // and that we are retrieving the new values in the GET API\r",
-									"            pm.expect( categoriaID ).to.eq( sentCategory.categoriaID );\r",
-									"            pm.expect( nombre ).to.eq( sentCategory.nombre );        \r",
-									"            pm.expect( descripcion ).to.eq( sentCategory.descripcion );\r",
-									"            pm.expect( peso ).to.eq( sentCategory.peso );\r",
+									"            pm.expect( categoryId ).to.eq( sentCategory.categoryId );\r",
+									"            pm.expect( name ).to.eq( sentCategory.name );        \r",
+									"            pm.expect( description ).to.eq( sentCategory.description );\r",
+									"            pm.expect( weight ).to.eq( sentCategory.weight );\r",
 									"\r",
 									"            // If all the tests pass, update 'category' variable with the modified values\r",
 									"            pm.variables.set('category', responseCategory);\r",
@@ -232,7 +232,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Prueba\",\r\n    \"descripcion\": \"Mi categoria 2\",\r\n    \"peso\": 50\r\n}",
+							"raw": "{\r\n    \"name\": \"Things to learn 2\",\r\n    \"description\": \"All the things I want to learn in my life 2\",\r\n    \"weight\": 82\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -240,14 +240,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/categoria/fb794da0-e4b7-4eb1-8b83-afe606a08e34",
+							"raw": "{{protocol}}://{{host}}/api/category/fb794da0-e4b7-4eb1-8b83-afe606a08e34",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"categoria",
+								"category",
 								"fb794da0-e4b7-4eb1-8b83-afe606a08e34"
 							]
 						}
@@ -263,9 +263,9 @@
 								"exec": [
 									"if(pm.variables.has('category')) {   \r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'categoria/';\r",
+									"    const searchParam = 'category/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('category').categoriaID;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('category').categoryId;\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -278,9 +278,9 @@
 									"if(pm.variables.has('category')) {\r",
 									"    pm.test(\"Category deleted successfully\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
-									"        const { categoriaID } = pm.variables.get('category');\r",
+									"        const { categoryId } = pm.variables.get('category');\r",
 									"\r",
-									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/categoria/${ categoriaID }`, function (err, response) {\r",
+									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/category/${ categoryId }`, function (err, response) {\r",
 									"            pm.expect(response.status).to.equal(\"Not Found\");\r",
 									"\r",
 									"            // If all the tests pass, update 'category' variable\r",
@@ -297,14 +297,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/categoria/8f2877a3-40a1-44fa-9b7f-540e026e7854",
+							"raw": "{{protocol}}://{{host}}/api/category/8f2877a3-40a1-44fa-9b7f-540e026e7854",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"categoria",
+								"category",
 								"8f2877a3-40a1-44fa-9b7f-540e026e7854"
 							]
 						}
@@ -312,19 +312,19 @@
 					"response": []
 				},
 				{
-					"name": "Get All",
+					"name": "Get All Categories",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/categoria",
+							"raw": "{{protocol}}://{{host}}/api/category",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"categoria"
+								"category"
 							]
 						}
 					},
@@ -333,42 +333,42 @@
 			]
 		},
 		{
-			"name": "Tasks",
+			"name": "Jobs",
 			"item": [
 				{
-					"name": "Add Task",
+					"name": "Add Job",
 					"event": [
 						{
 							"listen": "test",
 							"script": {
 								"exec": [
 									"if(pm.variables.has('category')) {\r",
-									"    pm.test(\"New task created\", () => {\r",
+									"    pm.test(\"New job created\", () => {\r",
 									"        pm.response.to.have.status(201);\r",
 									"\r",
 									"        // Validate response to have a body\r",
 									"        pm.response.to.have.jsonBody();\r",
 									"        const responseTask = pm.response.json();\r",
 									"\r",
-									"        // Validate response body to have a property named 'tareaID'\r",
+									"        // Validate response body to have a property named 'jobId'\r",
 									"        // with the ID of the new Tarea\r",
-									"        pm.expect(responseTask).to.have.property('tareaID').not.to.equal(undefined);\r",
-									"        const { tareaID, categoriaID, titulo, descripcion, prioridadTarea } = responseTask;\r",
+									"        pm.expect(responseTask).to.have.property('jobId').not.to.equal(undefined);\r",
+									"        const { jobId, categoryId, title, description, priority } = responseTask;\r",
 									"            \r",
 									"        // Validate response body to have the same values sent in the request body    \r",
-									"        pm.expect( categoriaID ).to.eq( pm.request.body.raw.categoriaID );\r",
-									"        pm.expect( titulo ).to.eq( pm.request.body.raw.titulo );\r",
-									"        pm.expect( descripcion ).to.eq( pm.request.body.raw.descripcion );\r",
-									"        pm.expect( prioridadTarea ).to.eq( pm.request.body.raw.prioridadTarea );    \r",
+									"        pm.expect( categoryId ).to.eq( pm.request.body.raw.categoryId );\r",
+									"        pm.expect( title ).to.eq( pm.request.body.raw.title );\r",
+									"        pm.expect( description ).to.eq( pm.request.body.raw.description );\r",
+									"        pm.expect( priority ).to.eq( pm.request.body.raw.priority );    \r",
 									"\r",
 									"        // Validate response to have a header named 'location'\r",
 									"        pm.response.to.have.header('location');\r",
 									"\r",
-									"        // Validate response header 'lcoation' to include 'tareaID'\r",
-									"        pm.expect(pm.response.headers.get('location')).to.contain(tareaID);\r",
+									"        // Validate response header 'lcoation' to include 'jobId'\r",
+									"        pm.expect(pm.response.headers.get('location')).to.contain(jobId);\r",
 									"\r",
-									"        // If all the tests pass, store 'task' in a temporal variable\r",
-									"        pm.variables.set('task', responseTask);\r",
+									"        // If all the tests pass, store 'job' in a temporal variable\r",
+									"        pm.variables.set('job', responseTask);\r",
 									"\r",
 									"        // Set the next endpoint to test: 'Get Task by Id'\r",
 									"        postman.setNextRequest('Get Task by Id');\r",
@@ -384,10 +384,10 @@
 								"exec": [
 									"if(pm.variables.has('category')) {    \r",
 									"    const body = {\r",
-									"        categoriaID: pm.variables.get('category').categoriaID,\r",
-									"        titulo: \"Tarea de prueba\",\r",
-									"        descripcion: \"Descripción de prueba\",\r",
-									"        prioridadTarea: 2\r",
+									"        categoryId: pm.variables.get('category').categoryId,\r",
+									"        title: \"Test\",\r",
+									"        description: \"Test Job\",\r",
+									"        priority: 2\r",
 									"    }\r",
 									"\r",
 									"    pm.request.body.raw = body;\r",
@@ -402,7 +402,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"categoriaID\": \"7c2196e4-9d06-4574-a212-d4bdef0a4bfb\",\r\n    \"titulo\": \"Visitar a mi tía\",\r\n    \"descripcion\": \"Acción de visita\",\r\n    \"prioridadTarea\": 2\r\n}",
+							"raw": "{\r\n    \"categoryId\": \"7c2196e4-9d06-4574-a212-d4bdef0a4bfb\",\r\n    \"title\": \"Visit my granny\",\r\n    \"description\": \"My granny needs help with her house\",\r\n    \"priority\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -410,31 +410,31 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/tarea",
+							"raw": "{{protocol}}://{{host}}/api/job",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"tarea"
+								"job"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "Get Task by Id",
+					"name": "Get Job by Id",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('task')) {\r",
+									"if(pm.variables.has('job')) {\r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'tarea/';\r",
+									"    const searchParam = 'job/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('task').tareaID;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('job').jobId;\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -444,28 +444,28 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('task')) {\r",
-									"    pm.test(\"Retrieve the task previously created\", () => {\r",
+									"if(pm.variables.has('job')) {\r",
+									"    pm.test(\"Retrieve the job previously created\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
 									"        \r",
-									"        const task = pm.variables.get('task');\r",
+									"        const job = pm.variables.get('job');\r",
 									"\r",
 									"        // Validate response to have a body\r",
 									"        pm.response.to.have.jsonBody();    \r",
 									"        const responseTask = pm.response.json();\r",
 									"        \r",
-									"        // Validate response body to have a property named 'tareaID'\r",
+									"        // Validate response body to have a property named 'jobId'\r",
 									"        // with the ID of the new Task\r",
-									"        pm.expect(responseTask).to.have.property('tareaID').not.equal(undefined);\r",
-									"        const { tareaID, categoriaID, titulo, descripcion, prioridadTarea } = responseTask;   \r",
+									"        pm.expect(responseTask).to.have.property('jobId').not.equal(undefined);\r",
+									"        const { jobId, categoryId, title, description, priority } = responseTask;   \r",
 									"\r",
 									"        // Validate response to have a body equals to the 'category'\r",
 									"        // created with the Add Task API\r",
-									"        pm.expect( tareaID ).to.eq( task.tareaID );\r",
-									"        pm.expect( categoriaID ).to.eq( task.categoriaID );\r",
-									"        pm.expect( titulo ).to.eq( task.titulo );\r",
-									"        pm.expect( descripcion ).to.eq( task.descripcion );\r",
-									"        pm.expect( prioridadTarea ).to.eq( task.prioridadTarea );\r",
+									"        pm.expect( jobId ).to.eq( job.jobId );\r",
+									"        pm.expect( categoryId ).to.eq( job.categoryId );\r",
+									"        pm.expect( title ).to.eq( job.title );\r",
+									"        pm.expect( description ).to.eq( job.description );\r",
+									"        pm.expect( priority ).to.eq( job.priority );\r",
 									"\r",
 									"        // Set the next endpoint to test: 'Modify Task'\r",
 									"        postman.setNextRequest('Modify Task');\r",
@@ -480,14 +480,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/tarea/f91144d4-0137-429a-8d24-abe92aa5c600",
+							"raw": "{{protocol}}://{{host}}/api/job/f91144d4-0137-429a-8d24-abe92aa5c600",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"tarea",
+								"job",
 								"f91144d4-0137-429a-8d24-abe92aa5c600"
 							]
 						}
@@ -495,23 +495,23 @@
 					"response": []
 				},
 				{
-					"name": "Modify Task",
+					"name": "Modify Job",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('task')) {   \r",
+									"if(pm.variables.has('job')) {   \r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'tarea/';\r",
+									"    const searchParam = 'job/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('task').tareaID;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('job').jobId;\r",
 									"    \r",
 									"    const body = {\r",
-									"        categoriaID: pm.variables.get('task').categoriaID,\r",
-									"        titulo: 'Tarea de Prueba 2',\r",
-									"        descripcion: \"Descripción de prueba 2\",\r",
-									"        prioridadTarea: 1\r",
+									"        categoryId: pm.variables.get('job').categoryId,\r",
+									"        title: \"Test 2\",\r",
+									"        description: \"Test Job 2\",\r",
+									"        priority: 1\r",
 									"    }\r",
 									"    \r",
 									"    pm.request.body.raw = body;\r",
@@ -524,28 +524,28 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('task')) {\r",
+									"if(pm.variables.has('job')) {\r",
 									"    pm.test(\"Task modificated successfully\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
 									"\r",
-									"        const sentTask = { tareaID: pm.variables.get('task').tareaID, ...pm.request.body.raw };    \r",
+									"        const sentTask = { jobId: pm.variables.get('job').jobId, ...pm.request.body.raw };    \r",
 									"\r",
-									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/tarea/${sentTask.tareaID}`, function (err, response) {\r",
+									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/job/${sentTask.jobId}`, function (err, response) {\r",
 									"            pm.expect(response.status).to.equal(\"OK\");        \r",
 									"\r",
 									"            const responseTask = response.json();\r",
-									"            const { tareaID, categoriaID, titulo, descripcion, prioridadTarea } = responseTask;\r",
+									"            const { jobId, categoryId, title, description, priority } = responseTask;\r",
 									"\r",
-									"            // Validate that the task has been modified in the database \r",
+									"            // Validate that the job has been modified in the database \r",
 									"            // and that we are retrieving the new values in the GET API\r",
-									"            pm.expect( tareaID ).to.eq( sentTask.tareaID );\r",
-									"            pm.expect( categoriaID ).to.eq( sentTask.categoriaID );\r",
-									"            pm.expect( titulo ).to.eq( sentTask.titulo );\r",
-									"            pm.expect( descripcion ).to.eq( sentTask.descripcion );\r",
-									"            pm.expect( prioridadTarea ).to.eq( sentTask.prioridadTarea );        \r",
+									"            pm.expect( jobId ).to.eq( sentTask.jobId );\r",
+									"            pm.expect( categoryId ).to.eq( sentTask.categoryId );\r",
+									"            pm.expect( title ).to.eq( sentTask.title );\r",
+									"            pm.expect( description ).to.eq( sentTask.description );\r",
+									"            pm.expect( priority ).to.eq( sentTask.priority );        \r",
 									"\r",
-									"            // If all the tests pass, update 'task' variable with the modified values\r",
-									"            pm.variables.set('task', responseTask);\r",
+									"            // If all the tests pass, update 'job' variable with the modified values\r",
+									"            pm.variables.set('job', responseTask);\r",
 									"        });\r",
 									"        \r",
 									"        // Set the next endpoint to test: 'Add Task'\r",
@@ -562,7 +562,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"categoriaID\": \"7c2196e4-9d06-4574-a212-d4bdef0a4bfc\",\r\n    \"titulo\": \"Visitar a mi tía 3\",\r\n    \"descripcion\": \"Debo visitar a mi tía en su casa y recoger las boletas\",\r\n    \"prioridadTarea\": 2\r\n}",
+							"raw": "{\r\n    \"categoryId\": \"7c2196e4-9d06-4574-a212-d4bdef0a4bfc\",\r\n    \"title\": \"Visit my granny 2\",\r\n    \"description\": \"My granny needs help with her house 2\",\r\n    \"priority\": 1\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -570,14 +570,14 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/tarea/e2d45cc2-bf86-45ec-8466-421ad930d222",
+							"raw": "{{protocol}}://{{host}}/api/job/e2d45cc2-bf86-45ec-8466-421ad930d222",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"tarea",
+								"job",
 								"e2d45cc2-bf86-45ec-8466-421ad930d222"
 							]
 						}
@@ -585,17 +585,17 @@
 					"response": []
 				},
 				{
-					"name": "Delete Task",
+					"name": "Delete Job",
 					"event": [
 						{
 							"listen": "prerequest",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('task')) {   \r",
+									"if(pm.variables.has('job')) {   \r",
 									"    let url = pm.request.url.toString();\r",
-									"    const searchParam = 'tarea/';\r",
+									"    const searchParam = 'job/';\r",
 									"    const index = url.indexOf(searchParam);\r",
-									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('task').tareaID;\r",
+									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('job').jobId;\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -605,16 +605,16 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"if(pm.variables.has('task')) {\r",
+									"if(pm.variables.has('job')) {\r",
 									"    pm.test(\"Task deleted successfully\", () => {\r",
 									"        pm.response.to.have.status(200);\r",
-									"        const { tareaID } = pm.variables.get('task');\r",
+									"        const { jobId } = pm.variables.get('job');\r",
 									"\r",
-									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/tarea/${ tareaID }`, function (err, response) {\r",
+									"        pm.sendRequest(`${pm.environment.get('protocol')}://${pm.environment.get('host')}/api/job/${ jobId }`, function (err, response) {\r",
 									"            pm.expect(response.status).to.equal(\"Not Found\");\r",
 									"\r",
-									"            // If all the tests pass, update 'task' variable\r",
-									"            pm.variables.unset('task');\r",
+									"            // If all the tests pass, update 'job' variable\r",
+									"            pm.variables.unset('job');\r",
 									"        });\r",
 									"\r",
 									"        postman.setNextRequest('Delete Category');\r",
@@ -629,14 +629,14 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/tarea/f2ca0bec-88ea-42f2-99db-fc1d36e84f01",
+							"raw": "{{protocol}}://{{host}}/api/job/f2ca0bec-88ea-42f2-99db-fc1d36e84f01",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"tarea",
+								"job",
 								"f2ca0bec-88ea-42f2-99db-fc1d36e84f01"
 							]
 						}
@@ -644,19 +644,19 @@
 					"response": []
 				},
 				{
-					"name": "Get All",
+					"name": "Get All Jobs",
 					"request": {
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/tarea",
+							"raw": "{{protocol}}://{{host}}/api/job",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
 							],
 							"path": [
 								"api",
-								"tarea"
+								"job"
 							]
 						}
 					},
@@ -670,14 +670,14 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{protocol}}://{{host}}/api/helloworld",
+					"raw": "{{protocol}}://{{host}}/api/health",
 					"protocol": "{{protocol}}",
 					"host": [
 						"{{host}}"
 					],
 					"path": [
 						"api",
-						"helloworld"
+						"health"
 					]
 				}
 			},
