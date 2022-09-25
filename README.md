@@ -1,6 +1,7 @@
 # Introduction
 
-Welcome! 
+Welcome!
+
 This project consists in a ToDo Web API created with the .net 6 framework, that is connected to an Azure SQL Database and deployed to an Azure Web App using Terraform.
 Every time you push some changes to the __main__ branch, a GitHub Action do the next jobs:
 
@@ -101,14 +102,36 @@ At the end of this step, you must have the following things created:
 
 ## 2. Setting up your Terraform client in GitHub Actions
 
+Before the GitHub Actions workflow can issue a Terraform Client, you must create a Terraform API Token.
+To do this, first create a Terraform Cloud Account, following the steps in this [Terraform Tutorial](https://learn.hashicorp.com/tutorials/terraform/cloud-sign-up?in=terraform/cloud-get-started#create-an-account)
+Next, Sign In into your Terraform Cloud Account, and go to the following link to create an API Token: [API Tokens](https://app.terraform.io/app/settings/tokens)
+Now, touch the **Create API Token**  button and write a name for the API Token:
+![image](https://user-images.githubusercontent.com/5461235/192148683-eb844f9c-1c3d-4e01-9722-cb2dc220fcbb.png)
+![image](https://user-images.githubusercontent.com/5461235/192148716-84c1c8ad-aed5-4fd4-a3c6-96d8480ece2f.png)
+
+Next, you will see a Token like this:
+![image](https://user-images.githubusercontent.com/5461235/192148763-aff20712-1023-4805-97fe-b84ab2a12e45.png)
+
+You have to copy this Token and store it as a new GitHub Secret with the name of **TF_API_TOKEN**.
+
+## 3. Latest settings
+
+I have to request you to create two more extra GitHub Secrets. They are intended to be used in the creation of the Azure SQL Database:
+- **SQL_SERVER_ADMIN_USERNAME:** [The username of your Azure SQL Database]
+- **SQL_SERVER_ADMIN_PASSWORD:** [The password of your Azure SQL Database]
 ---
 
 # Useful links
 
-- [Terraform Authenticate to Azure](https://learn.microsoft.com/es-es/azure/developer/terraform/authenticate-to-azure?tabs=bash)
+- [Azure Fundamentals](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/fundamental-concepts)
+- [Create Azure Account](https://learn.microsoft.com/en-us/dotnet/azure/create-azure-account)
+- [Terraform Authenticate to Azure](https://learn.microsoft.com/es-es/azure/developer/terraform/authenticate-to-azure?tabs=bash) 
 - [Configure a Service Principal with a Secret](https://github.com/marketplace/actions/azure-login#configure-a-service-principal-with-a-secret)
 - [Set Azure Context in PowerShell](https://learn.microsoft.com/en-us/powershell/module/az.accounts/Set-AzContext?view=azps-8.3.0)
 - [Store Terraform State in Azure Storage](https://learn.microsoft.com/es-es/azure/developer/terraform/store-state-in-azure-storage?tabs=powershell)
+- [Terraform Cloud SignUp](https://app.terraform.io/public/signup/account)
+- [Terraform Accounts and Tokens](https://www.terraform.io/cloud-docs/users-teams-organizations/users?_gl=1*1i5uqtc*_ga*NTQ2MjMzNTgyLjE2NjExNzMwNTg.*_ga_P7S46ZYEKW*MTY2NDExNTA2Mi4xNS4xLjE2NjQxMTU3MzUuMC4wLjA.#users)
+- [Configure a Terraform Client in GitHub Actions](https://learn.hashicorp.com/tutorials/terraform/github-actions)
 - [Using Terraform outputs](https://www.terraform.io/cli/commands/output)
 - [GitHub Actions - Defining outputs for jobs](https://docs.github.com/en/actions/using-jobs/defining-outputs-for-jobs)
 
