@@ -45,13 +45,13 @@ public class CategoryService : ICategoryService
 
     public async Task<bool> Update(Guid id, Category category)
     {
-        var categoryActual = context.Categories.Find(id);
+        var currentCategory = context.Categories.Find(id);
 
-        if(categoryActual != null)
+        if(currentCategory != null)
         {
-            categoryActual.Name = category.Name;
-            categoryActual.Description = category.Description;
-            categoryActual.Weight = category.Weight;
+            currentCategory.Name = category.Name;
+            currentCategory.Description = category.Description;
+            currentCategory.Weight = category.Weight;
 
             await context.SaveChangesAsync();
             return true;
@@ -61,11 +61,11 @@ public class CategoryService : ICategoryService
 
     public async Task<bool> Delete(Guid id)
     {
-        var categoryActual = context.Categories.Find(id);
+        var currentCategory = context.Categories.Find(id);
 
-        if(categoryActual != null)
+        if(currentCategory != null)
         {
-            context.Remove(categoryActual);
+            context.Remove(currentCategory);
             await context.SaveChangesAsync();
             return true;
         }

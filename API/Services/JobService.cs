@@ -48,14 +48,14 @@ public class JobService : IJobService
 
     public async Task<bool> Update(Guid id, Job job)
     {
-        var jobActual = context.Jobs.Find(id);
+        var currentJob = context.Jobs.Find(id);
 
-        if(jobActual != null)
+        if(currentJob != null)
         {
-            jobActual.CategoryId = job.CategoryId;
-            jobActual.Title = job.Title;
-            jobActual.Description = job.Description;
-            jobActual.Priority = job.Priority;
+            currentJob.CategoryId = job.CategoryId;
+            currentJob.Title = job.Title;
+            currentJob.Description = job.Description;
+            currentJob.Priority = job.Priority;
 
             await context.SaveChangesAsync();
             return true;
@@ -65,11 +65,11 @@ public class JobService : IJobService
 
     public async Task<bool> Delete(Guid id)
     {
-        var jobActual = context.Jobs.Find(id);
+        var currentJob = context.Jobs.Find(id);
 
-        if(jobActual != null)
+        if(currentJob != null)
         {
-            context.Remove(jobActual);
+            context.Remove(currentJob);
             await context.SaveChangesAsync();
             return true;
         }
