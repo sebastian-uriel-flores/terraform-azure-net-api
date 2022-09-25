@@ -29,6 +29,6 @@ variable "sqlserver_administrator_login_password" {
 
 variable "webapp_project_name" {
   description = "Name of the .NET Project that has to be run"
-  type        = string  
+  type        = string
   nullable    = false
 }

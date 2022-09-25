@@ -86,7 +86,7 @@ resource "azurerm_linux_web_app" "demo" {
 
   site_config {
     always_on         = false
-    app_command_line  = "dotnet ${ var.webapp_project_name }.dll"
+    app_command_line  = "dotnet ${var.webapp_project_name}.dll"
     use_32_bit_worker = true
     application_stack {
       dotnet_version = "6.0"
