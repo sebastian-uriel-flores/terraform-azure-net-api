@@ -28,27 +28,27 @@ public class CategoryController : ControllerBase
     public async Task<IActionResult> GetById(Guid id)
     {
         logger.LogInformation("CategoryController.GetById");        
-        var categoria = await categoryService.Get(id);
+        var category = await categoryService.Get(id);
         
-        return categoria != null ? Ok(categoria) : NotFound();
+        return category != null ? Ok(category) : NotFound();
     }
     
     [HttpPost]
-    public async Task<IActionResult> Save([FromBody] Category categoria)
+    public async Task<IActionResult> Save([FromBody] Category category)
     {
         logger.LogInformation("CategoryController.Save");
-        var createdResource = await categoryService.Save(categoria);
+        var createdResource = await categoryService.Save(category);
         var actionName = nameof(CategoryController.GetById);
-        var controllerName = "categoria";
+        var controllerName = "category";
         var routeValues = new { id = createdResource.CategoryId };
         return CreatedAtAction(actionName, controllerName, routeValues, createdResource);
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] Category categoria)
+    public async Task<IActionResult> Update(Guid id, [FromBody] Category category)
     {
         logger.LogInformation("CategoryController.Update");
-        var found = await categoryService.Update(id, categoria);
+        var found = await categoryService.Update(id, category);
 
         return found ? Ok() : NotFound();
     }

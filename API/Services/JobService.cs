@@ -9,9 +9,9 @@ public interface IJobService
 
     Task<Job?> Get(Guid id);
 
-    Task<Job> Save(Job tarea);
+    Task<Job> Save(Job job);
 
-    Task<bool> Update(Guid id, Job tarea);
+    Task<bool> Update(Guid id, Job job);
 
     Task<bool> Delete(Guid id);
 }
@@ -35,27 +35,27 @@ public class JobService : IJobService
             .FirstOrDefaultAsync(t => t.JobId == id);
     }
 
-    public async Task<Job> Save(Job tarea)
+    public async Task<Job> Save(Job job)
     {
-        tarea.JobId = Guid.NewGuid();
-        tarea.CreationDate = DateTime.Now;        
-        tarea.Category = null;
-        await context.AddAsync(tarea);
+        job.JobId = Guid.NewGuid();
+        job.CreationDate = DateTime.Now;        
+        job.Category = null;
+        await context.AddAsync(job);
         await context.SaveChangesAsync();
 
-        return tarea;
+        return job;
     }
 
-    public async Task<bool> Update(Guid id, Job tarea)
+    public async Task<bool> Update(Guid id, Job job)
     {
-        var tareaActual = context.Jobs.Find(id);
+        var jobActual = context.Jobs.Find(id);
 
-        if(tareaActual != null)
+        if(jobActual != null)
         {
-            tareaActual.CategoryId = tarea.CategoryId;
-            tareaActual.Title = tarea.Title;
-            tareaActual.Description = tarea.Description;
-            tareaActual.Priority = tarea.Priority;
+            jobActual.CategoryId = job.CategoryId;
+            jobActual.Title = job.Title;
+            jobActual.Description = job.Description;
+            jobActual.Priority = job.Priority;
 
             await context.SaveChangesAsync();
             return true;
@@ -65,11 +65,11 @@ public class JobService : IJobService
 
     public async Task<bool> Delete(Guid id)
     {
-        var tareaActual = context.Jobs.Find(id);
+        var jobActual = context.Jobs.Find(id);
 
-        if(tareaActual != null)
+        if(jobActual != null)
         {
-            context.Remove(tareaActual);
+            context.Remove(jobActual);
             await context.SaveChangesAsync();
             return true;
         }

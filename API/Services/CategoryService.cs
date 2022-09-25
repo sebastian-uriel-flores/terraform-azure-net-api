@@ -8,9 +8,9 @@ public interface ICategoryService
 
     Task<Category?> Get(Guid id);
 
-    Task<Category> Save(Category categoria);
+    Task<Category> Save(Category category);
 
-    Task<bool> Update(Guid id, Category categoria);
+    Task<bool> Update(Guid id, Category category);
 
     Task<bool> Delete(Guid id);
 }
@@ -33,25 +33,25 @@ public class CategoryService : ICategoryService
         return await context.Categories.FindAsync(id);
     }
 
-    public async Task<Category> Save(Category categoria)
+    public async Task<Category> Save(Category category)
     {
-        categoria.CategoryId = Guid.NewGuid();
-        categoria.Jobs = null;
-        await context.AddAsync(categoria);
+        category.CategoryId = Guid.NewGuid();
+        category.Jobs = null;
+        await context.AddAsync(category);
         await context.SaveChangesAsync();
 
-        return categoria;
+        return category;
     }
 
-    public async Task<bool> Update(Guid id, Category categoria)
+    public async Task<bool> Update(Guid id, Category category)
     {
-        var categoriaActual = context.Categories.Find(id);
+        var categoryActual = context.Categories.Find(id);
 
-        if(categoriaActual != null)
+        if(categoryActual != null)
         {
-            categoriaActual.Name = categoria.Name;
-            categoriaActual.Description = categoria.Description;
-            categoriaActual.Weight = categoria.Weight;
+            categoryActual.Name = category.Name;
+            categoryActual.Description = category.Description;
+            categoryActual.Weight = category.Weight;
 
             await context.SaveChangesAsync();
             return true;
@@ -61,11 +61,11 @@ public class CategoryService : ICategoryService
 
     public async Task<bool> Delete(Guid id)
     {
-        var categoriaActual = context.Categories.Find(id);
+        var categoryActual = context.Categories.Find(id);
 
-        if(categoriaActual != null)
+        if(categoryActual != null)
         {
-            context.Remove(categoriaActual);
+            context.Remove(categoryActual);
             await context.SaveChangesAsync();
             return true;
         }

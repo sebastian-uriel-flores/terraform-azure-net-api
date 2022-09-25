@@ -44,7 +44,7 @@ public class JobContext : DbContext
         });
 
         // Tareas
-        var tareasInit = new List<Job>
+        var jobsInit = new List<Job>
         {
             new Job
             {
@@ -98,7 +98,7 @@ public class JobContext : DbContext
             job.Property(p => p.Priority);
             job.Property(p => p.CreationDate);            
 
-            job.HasData(tareasInit);
+            job.HasData(jobsInit);
         });
     }
 }
