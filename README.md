@@ -12,6 +12,9 @@ Every time you push some changes to the __main__ branch, a GitHub Action does th
 As you can see, this project covers the basics of the Continuous Integration and Continuous Deployment of a cloud App based on Azure.
 I wish it could be of help mainly for beginners, but also for the people who are used to work with other clouds or who wants to remember the basics of every part of a CI/CD workflow.
 
+![Azure APIs](https://user-images.githubusercontent.com/5461235/192288380-81e254d4-7721-4071-957c-f6ab1f965eb6.png)
+
+
 # How to use it
 
 In the beginning, you have to fork the project. It is mainly because you will have to store some secrets and the way it is done in this project is using GitHub secrets. So, be sure of forking the project.
