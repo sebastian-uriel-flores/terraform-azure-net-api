@@ -2,33 +2,33 @@
 
 Welcome!
 
-This project consists in a ToDo Web API created with the .net 6 framework, that is connected to an Azure SQL Database and deployed to an Azure Web App using Terraform.
-Every time you push some changes to the __main__ branch, a GitHub Action do the next jobs:
+This project consists of a ToDo Web API created with the .net 6 framework, that is connected to an Azure SQL Database and deployed to an Azure Web App using Terraform.
+Every time you push some changes to the __main__ branch, a GitHub Action does the next jobs:
 
 1. It updates the Azure infrastructure using Terraform.
 2. Next, it compiles the API and deploys it to the created Azure Web App.
-3. At the end, it runs a collection of automated tests created using the Postman testing tools.
+3. In the end, it runs a collection of automated tests created using the Postman testing tools.
 
-As you can see, this project covers the basics of the Continuous Integration and Continuous Deployment of a cloud App based in Azure.
-I wish it could be of help mainly for the beginners, but also for the people who is used to work with other clouds or who wants to remember the basics of every part of a CI/CD workflow.
+As you can see, this project covers the basics of the Continuous Integration and Continuous Deployment of a cloud App based on Azure.
+I wish it could be of help mainly for beginners, but also for the people who are used to work with other clouds or who wants to remember the basics of every part of a CI/CD workflow.
 
 # How to use it
 
-At the beginning, you have to fork the project. It is mainly because you will have to store some secrets and the way it is done in this project is using the GitHub secrets. So, be sure of forking the project.
+In the beginning, you have to fork the project. It is mainly because you will have to store some secrets and the way it is done in this project is using GitHub secrets. So, be sure of forking the project.
 
 ## 1. Setting up your Azure account
 Next, you must create an Azure Account. You can check this link for more information about this step ([Create Azure Account](https://learn.microsoft.com/en-us/dotnet/azure/create-azure-account)).
-If you don't know anything about Azure, I suggest you to read the [Azure Fundamentals](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/fundamental-concepts).
+If you don't know anything about Azure, I suggest you read the [Azure Fundamentals](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/fundamental-concepts).
 
-Once you have your account ready to use, I suggest you to create a new subscription for all the resources we need, instead of using the default one. It will give you more control of your cloud environment and the costs associated.
+Once you have your account ready to use, I suggest you create a new subscription for all the resources we need, instead of using the default one. It will give you more control of your cloud environment and the costs associated.
 
-Next, you have to create a Service Principal to give GitHub Actions permissions over the recently created subscription. You can do this running the next script in a PowerShell terminal:
+Next, you have to create a Service Principal to give GitHub Actions permissions over the recently created subscription. You can do this by running the next script in a PowerShell terminal:
 
 ```powershell
 $SUBSCRIPTION='[subscription id]'
 $SERVICE_PRINCIPAL_NAME='[name of the service principal]'
 
-# Create the service Principal
+# Create the Service Principal
 az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --role contributor --scopes /subscriptions/ $SUBSCRIPTION --sdk-auth
 ```
 
@@ -51,14 +51,14 @@ As you can see, it contains some important values, that we are going to use in t
 - **ARM_SUBSCRIPTION_ID:** [subscriptionID]
 - **ARM_TENANT_ID:** [tenantId]
 
-To indicate your machine that you are working with the new Subscription, you have to set it as your *current Azure context*, running the following script:
+To indicate to your machine that you are working with the new Subscription, you have to set it as your *current Azure context*, running the following script:
 ```powershell
 Set-AzContext -Subscription $SUBSCRIPTION
 ```
 
 ### Creating the Terraform backend in Azure
 Now, you have to create a Resource Group in your Subscription and a Storage Account inside of it, that will be used by the Terraform client as the backend.
-You can do it running the next scripts in the Powershell terminal we were working before:
+You can do it by running the next scripts in the Powershell terminal we were working on before:
 
 ```powershell
 $RESOURCE_GROUP_NAME='[backend resource group name]'
@@ -76,7 +76,7 @@ New-AzStorageContainer -Name $CONTAINER_NAME -Context $storageAccount.context -P
 $STORAGE_ACCOUNT_KEY=(Get-AzStorageAccountKey -ResourceGroupName $RESOURCE_GROUP_NAME -Name $STORAGE_ACCOUNT_NAME)[0].value
 ```
 
-To continue, you must create three GitHub Sectrets, to store the new Resource Group Name, the Storage Account Name and the Storage Account Key, with the following names:
+To continue, you must create three GitHub Secrets, to store the new Resource Group Name, the Storage Account Name, and the Storage Account Key, with the following names:
 - **ARM_ACCOUNT_KEY**: [The Account Key of the Storage Account created for the Terraform Backend]
 - **TF_BACKEND_RESOURCE_GROUP_NAME**: [The Resource Group Name created for the Terraform Backend]
 - **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [The Name of the Storage Account created for the Terraform Backend]
@@ -84,8 +84,8 @@ To continue, you must create three GitHub Sectrets, to store the new Resource Gr
 ## 2. Setting up your Terraform client in GitHub Actions
 
 Before the GitHub Actions workflow can issue a Terraform Client, you must create a Terraform API Token.
-To do this, first create a Terraform Cloud Account, following the steps in this [Terraform Tutorial](https://learn.hashicorp.com/tutorials/terraform/cloud-sign-up?in=terraform/cloud-get-started#create-an-account)
-Next, Sign In into your Terraform Cloud Account, and go to the following link to create an API Token: [API Tokens](https://app.terraform.io/app/settings/tokens)
+To do this, first create a Terraform Cloud Account, following the steps in this [Terraform Tutorial](https://learn.hashicorp.com/tutorials/terraform/cloud-sign-up?in=terraform/cloud-get-started#create-an-account).
+Next, Sign In to your Terraform Cloud Account, and go to the following link to create an API Token: [API Tokens](https://app.terraform.io/app/settings/tokens)
 Now, touch the **Create API Token**  button and write a name for the API Token:
 ![image](https://user-images.githubusercontent.com/5461235/192148683-eb844f9c-1c3d-4e01-9722-cb2dc220fcbb.png)
 ![image](https://user-images.githubusercontent.com/5461235/192148716-84c1c8ad-aed5-4fd4-a3c6-96d8480ece2f.png)
@@ -95,21 +95,21 @@ Next, you will see a Token like this:
 
 ![image](https://user-images.githubusercontent.com/5461235/192148763-aff20712-1023-4805-97fe-b84ab2a12e45.png)
 
-You have to copy this Token and store it as a new GitHub Secret with the name of **TF_API_TOKEN**.
+You have to copy this Token and store it as a new GitHub Secret with the name **TF_API_TOKEN**.
 
 ## 3. Latest settings
 
-I have to request you to create two more extra GitHub Secrets. They are intended to be used in the creation of the Azure SQL Database:
+I have to request you create two more extra GitHub Secrets. They are intended to be used in the creation of the Azure SQL Database:
 - **SQL_SERVER_ADMIN_USERNAME:** [The username of your Azure SQL Database]
 - **SQL_SERVER_ADMIN_PASSWORD:** [The password of your Azure SQL Database]
 
 ## 4. Verify the Creations
-At the end, you should have the following things created:
+In the end, you should have the following things created:
 
 **Azure:**
-- Dedicated Subscription for all the Resources.
+- A dedicated Subscription for all the Resources.
 - A dedicated Resource Group inside the Subscription, for the Terraform backend.
-- A Storage Account created inside the Resource Group, to be used by the Terraform client.
+- A Storage Account inside the Resource Group, to be used by the Terraform client.
 - A Blob Container inside the Storage Account, to store the Terraform client state.
 - A Service Principal in your Tenant who give GitHub Actions the permissions to interact with your dedicated Azure Subscription.
 
