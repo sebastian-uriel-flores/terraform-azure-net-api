@@ -1,4 +1,4 @@
-name: 'Continuous Deployment'
+name: 'CI/CD'
 
 on:
   push:
@@ -17,7 +17,7 @@ env:
 
 jobs:
   terraform:
-    name: 'Terraform'
+    name: Prepare infrastructure
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -36,7 +36,7 @@ jobs:
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
-      uses: actions/checkout@v3      
+      uses: actions/checkout@v3
 
     # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
     - name: Setup Terraform
@@ -65,29 +65,27 @@ jobs:
         TF_VAR_sqlserver_administrator_login_password: '${{ secrets.SQL_SERVER_ADMIN_PASSWORD }}'
         TF_VAR_webapp_project_name: '${{ env.API_PROJECT_NAME }}'
 
-      # On push to "main", build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+    # Apply Infrastructure changes      
     - name: Terraform Apply
       id: tfapply
-      #if: github.ref == 'refs/heads/"main"' && github.event_name == 'push'
-      run: terraform apply -input=false tfplan        
+      run: terraform apply -input=false tfplan
       working-directory: '${{ env.IAC_PATH }}'
     
     # I had to use terraform-bin instead of terraform due to this issue:
     # https://github.com/hashicorp/setup-terraform/issues/20
     - name: Terraform Outputs
-      id: tfoutput      
+      id: tfoutput
       run: echo "::set-output name=resource_name_suffix::$(terraform-bin output -raw resource_name_suffix)"
-      working-directory: '${{ env.IAC_PATH }}'      
+      working-directory: '${{ env.IAC_PATH }}'
 
   dotnet:
-    name: 'DotNet'
+    name: Publish APIs
     runs-on: ubuntu-latest
     environment: production
     needs: terraform
     env:
-      IAC_WEBAPP_NAME: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}'  # set this to your application's name      
-      API_PATH: 'API'      # set this to the path to your web app project, defaults to the repository root
+      IAC_WEBAPP_NAME: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}'
+      API_PATH: 'API'
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
@@ -97,53 +95,53 @@ jobs:
       uses: actions/setup-dotnet@v2.1.0
       
     # Run dotnet build and publish
-    - name: dotnet build and publish
+    - name: .NET Build and Publish
       run: |
           dotnet restore
           dotnet build -c Release
-          dotnet publish -c Release -o 'out' 
+          dotnet publish -c Release -o 'out'
       working-directory: '${{ env.API_PATH }}'
           
-    - uses: Azure/login@v1
+    - name: Azure Login
+      uses: Azure/login@v1
       with:
           creds: '{"clientId":"${{ secrets.ARM_CLIENT_ID }}","clientSecret":"${{ secrets.ARM_CLIENT_SECRET }}","subscriptionId":"${{ secrets.ARM_SUBSCRIPTION_ID }}","tenantId":"${{ secrets.ARM_TENANT_ID }}"}'
           
       # Deploy to Azure Web apps
-    - name: 'Run Azure webapp deploy action using publish profile credentials'
+    - name: Azure WebApp deploy
       uses: azure/webapps-deploy@v2
       with: 
-          app-name: '${{ env.IAC_WEBAPP_NAME }}' # Replace with your app name          
+          app-name: '${{ env.IAC_WEBAPP_NAME }}'
           package: '${{ env.API_PATH }}/out'
   
   testing:
-    name: 'Test APIs'
+    name: Test APIs
     runs-on: ubuntu-latest
     environment: production
     needs: [terraform, dotnet]
     env:
       IAC_WEBAPP_PROTOCOL: 'https'
-      IAC_WEBAPP_URL: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}.azurewebsites.net'  # set this to your application's name      
-      TESTING_PATH: 'Testing'      # set this to the path to your web app project, defaults to the repository root
+      IAC_WEBAPP_URL: 'webapp${{ needs.terraform.outputs.resource_name_suffix }}.azurewebsites.net'
+      TESTING_PATH: 'Testing'
     steps:
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v3 
-      
-    - name: Update postman environment          
+
+    - name: Update Postman environment
       uses: cschleiden/replace-tokens@v1.1
-      with:        
-        tokenPrefix: '__'         
-        tokenSuffix: '__'         
+      with:
+        tokenPrefix: '__'
+        tokenSuffix: '__'
         files: '["${{ env.TESTING_PATH }}/environment.postman_environment"]'
     
     - name: Setup Node.js environment
       uses: actions/setup-node@v3.4.1      
     
     # Run dotnet build and publish
-    - name: newman install
+    - name: Newman install
       run:  npm install -g newman
       
-    - name: newman run tests
-      run:  newman run collection.postman_collection -e environment.postman_environment --reporters cli          
-      working-directory: '${{ env.TESTING_PATH }}'     
-    
+    - name: Newman run tests
+      run:  newman run collection.postman_collection -e environment.postman_environment --reporters cli
+      working-directory: '${{ env.TESTING_PATH }}'

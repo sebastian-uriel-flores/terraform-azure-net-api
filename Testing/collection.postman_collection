@@ -17,6 +17,8 @@
 							"script": {
 								"exec": [
 									"if(pm.environment.has('test') && pm.environment.get('test') == 1) {\r",
+									"    pm.variables.set('test', 1);\r",
+									"    \r",
 									"    pm.test(\"New category created\", () => {\r",
 									"        pm.response.to.have.status(201);\r",
 									"\r",
@@ -287,6 +289,9 @@
 									"            pm.variables.unset('category');\r",
 									"        });\r",
 									"    });\r",
+									"\r",
+									"    // Set the next endpoint to test: 'Add ToDo'\r",
+									"    postman.setNextRequest(null);\r",
 									"}"
 								],
 								"type": "text/javascript"
@@ -313,6 +318,17 @@
 				},
 				{
 					"name": "Get All Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
 					"request": {
 						"method": "GET",
 						"header": [],
