@@ -2,8 +2,8 @@
 
 Welcome!
 
-This project consists of a ToDo Web API created with the .net 6 framework, that is connected to an Azure SQL Database and deployed to an Azure Web App using Terraform.
-Every time you push some changes to the __main__ branch, a GitHub Action does the next jobs:
+This project consists of a ToDo Web API created with the .NET 6 framework, that is connected to an Azure SQL Database and deployed to an Azure Web App using Terraform.
+Every time you push some changes to the __main__ branch, a GitHub Actions Workflow does the next jobs:
 
 1. It updates the Azure infrastructure using Terraform.
 2. Next, it compiles the API and deploys it to the created Azure Web App.
@@ -23,7 +23,7 @@ In the beginning, you have to fork the project. It is mainly because you will ha
 Next, you must create an Azure Account. You can check this link for more information about this step ([Create Azure Account](https://learn.microsoft.com/en-us/dotnet/azure/create-azure-account)).
 If you don't know anything about Azure, I suggest you read the [Azure Fundamentals](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/fundamental-concepts).
 
-Once you have your account ready to use, I suggest you create a new subscription for all the resources we need, instead of using the default one. It will give you more control of your cloud environment and the costs associated.
+Once you have your account ready to use, I suggest you create a new subscription for all the resources that are going to be created, instead of using the default one. It will give you more control of your cloud environment and the costs associated.
 
 Next, you have to create a Service Principal to give GitHub Actions permissions over the recently created subscription. You can do this by running the next script in a PowerShell terminal:
 
@@ -47,27 +47,27 @@ Once the Service Principal has been created, you will see that the terminal outp
 }
 ```
 
-As you can see, it contains some important values, that we are going to use in the next steps. Please, be sure of storing as GitHub Secrets, using the following names:
+As you can see, it contains some important values, that we are going to use in the next steps. Please, be sure of storing them as GitHub Secrets, using the following names:
 
 - **ARM_CLIENT_ID:** [clientId]
 - **ARM_CLIENT_SECRET:** [clientSecret]
 - **ARM_SUBSCRIPTION_ID:** [subscriptionID]
 - **ARM_TENANT_ID:** [tenantId]
 
-To indicate to your machine that you are working with the new Subscription, you have to set it as your *current Azure context*, running the following script:
+To indicate your machine that you are working with the new Subscription, you have to set it as your *current Azure context*, running the following script:
 ```powershell
 Set-AzContext -Subscription $SUBSCRIPTION
 ```
 
 ### Creating the Terraform backend in Azure
 Now, you have to create a Resource Group in your Subscription and a Storage Account inside of it, that will be used by the Terraform client as the backend.
-You can do it by running the next scripts in the Powershell terminal we were working on before:
+You can do it by running the next scripts in the PowerShell terminal you were working on before:
 
 ```powershell
 $RESOURCE_GROUP_NAME='[backend resource group name]'
 $STORAGE_ACCOUNT_NAME='[backend storage account name]'
 $CONTAINER_NAME='[backend storage container name]'
-$LOCATION='[location of the resources]'
+$LOCATION='[geo-location of the resources]'
 
 # Creates the Storage Account
 $storageAccount = New-AzStorageAccount -ResourceGroupName $RESOURCE_GROUP_NAME -Name $STORAGE_ACCOUNT_NAME -SkuName Standard_LRS -Location $LOCATION -AllowBlobPublicAccess $true
@@ -88,7 +88,7 @@ To continue, you must create three GitHub Secrets, to store the new Resource Gro
 
 Before the GitHub Actions workflow can issue a Terraform Client, you must create a Terraform API Token.
 To do this, first create a Terraform Cloud Account, following the steps in this [Terraform Tutorial](https://learn.hashicorp.com/tutorials/terraform/cloud-sign-up?in=terraform/cloud-get-started#create-an-account).
-Next, Sign In to your Terraform Cloud Account, and go to the following link to create an API Token: [API Tokens](https://app.terraform.io/app/settings/tokens)
+Next, sign in to your Terraform Cloud Account, and go to the following link to create an API Token: [API Tokens](https://app.terraform.io/app/settings/tokens)
 Now, touch the **Create API Token**  button and write a name for the API Token:
 ![image](https://user-images.githubusercontent.com/5461235/192148683-eb844f9c-1c3d-4e01-9722-cb2dc220fcbb.png)
 ![image](https://user-images.githubusercontent.com/5461235/192148716-84c1c8ad-aed5-4fd4-a3c6-96d8480ece2f.png)
