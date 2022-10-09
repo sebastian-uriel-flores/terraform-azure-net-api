@@ -1,17 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using DemoAPIAzure;
+using DemoAPIAzure.Middlewares;
 using DemoAPIAzure.Services;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers().AddJsonOptions(options => 
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IHealthService, HealthService>();
-builder.Services.AddSqlServer<ToDoContext>(builder.Configuration.GetConnectionString("cnToDos"));
+builder.Services.AddDbContext<ToDoContext>(options => 
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("cnToDos"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);    
+});
+builder.Services.AddAutoMapper(typeof(Program));
+
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IToDoService, ToDoService>();
 
@@ -34,6 +41,8 @@ using (var scope = app.Services.CreateScope())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseLoggingMiddleware();
 
 app.MapControllers();
 

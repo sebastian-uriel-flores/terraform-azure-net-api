@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using DemoAPIAzure.Models;
+using DemoAPIAzure.Entities;
 using DemoAPIAzure.Services;
+using DemoAPIAzure.DTOs;
 
 namespace DemoAPIAzure.Controllers;
 
@@ -8,35 +9,30 @@ namespace DemoAPIAzure.Controllers;
 [Route("api/[controller]")]
 public class CategoryController : ControllerBase
 {
-    ILogger<CategoryController> logger;
     ICategoryService categoryService;
 
-    public CategoryController(ILogger<CategoryController> logger, ICategoryService categoryService)
+    public CategoryController(ICategoryService categoryService)
     {
-        this.logger = logger;
         this.categoryService = categoryService;
     }
 
     [HttpGet]
-    public IActionResult Get()
+    public async Task<List<CategoryDTO>> Get()
     {
-        logger.LogInformation("CategoryController.Get");
-        return Ok(categoryService.Get());
+        return await categoryService.Get();
     }
 
     [HttpGet("{id:guid}")]
-    public async Task<IActionResult> GetById(Guid id)
+    public async Task<ActionResult<CategoryDTO>> GetById(Guid id)
     {
-        logger.LogInformation("CategoryController.GetById");        
         var category = await categoryService.Get(id);
         
-        return category != null ? Ok(category) : NotFound();
+        return category is null ? NotFound() : Ok(category);
     }
     
     [HttpPost]
-    public async Task<IActionResult> Save([FromBody] Category category)
+    public async Task<ActionResult<CategoryDTO>> Save([FromBody] Category category)
     {
-        logger.LogInformation("CategoryController.Save");
         var createdResource = await categoryService.Save(category);
         var actionName = nameof(CategoryController.GetById);
         var controllerName = "category";
@@ -45,18 +41,16 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, [FromBody] Category category)
+    public async Task<ActionResult> Update(Guid id, [FromBody] Category category)
     {
-        logger.LogInformation("CategoryController.Update");
         var found = await categoryService.Update(id, category);
 
         return found ? Ok() : NotFound();
     }
 
     [HttpDelete("{id:guid}")]
-    public async Task<IActionResult> Delete(Guid id)
+    public async Task<ActionResult> Delete(Guid id)
     {
-        logger.LogInformation("CategoryController.Delete");
         var found = await categoryService.Delete(id);
 
         return found ? Ok() : NotFound();

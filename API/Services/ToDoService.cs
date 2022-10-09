@@ -1,15 +1,18 @@
 using Microsoft.EntityFrameworkCore;
-using DemoAPIAzure.Models;
+using DemoAPIAzure.Entities;
+using AutoMapper;
+using DemoAPIAzure.DTOs;
+using AutoMapper.QueryableExtensions;
 
 namespace DemoAPIAzure.Services;
 
 public interface IToDoService
 {
-    IEnumerable<ToDo> Get();
+    Task<List<ToDoDTO>> Get();
 
-    Task<ToDo?> Get(Guid id);
+    Task<ToDoDTO> Get(Guid id);
 
-    Task<ToDo> Save(ToDo toDo);
+    Task<ToDoDTO> Save(ToDo toDo);
 
     Task<bool> Update(Guid id, ToDo toDo);
 
@@ -17,25 +20,34 @@ public interface IToDoService
 }
 public class ToDoService : IToDoService
 {
-    ToDoContext context;
+    private readonly ToDoContext context;
+    private readonly IMapper mapper;
 
-    public ToDoService(ToDoContext dbContext)
+    public ToDoService(ToDoContext dbContext, IMapper mapper)
     {
         this.context = dbContext;
+        this.mapper =  mapper;
     }
 
-    public IEnumerable<ToDo> Get()
+    public async Task<List<ToDoDTO>> Get()
     {
-        return context.ToDos.Include(t => t.Category);
+        return await context.ToDos
+            .ProjectTo<ToDoDTO>(mapper.ConfigurationProvider)
+            .OrderByDescending(td => td.Priority)
+            .OrderBy(td => td.Title)
+            .ToListAsync();
     }
     
-    public async Task<ToDo?> Get(Guid id)
+    public async Task<ToDoDTO> Get(Guid id)
     {
-        return await context.ToDos.Include(t => t.Category)
+        var toDo = await context.ToDos
+            .Include(t => t.Category)
             .FirstOrDefaultAsync(t => t.ToDoId == id);
+        
+        return mapper.Map<ToDoDTO>(toDo);
     }
 
-    public async Task<ToDo> Save(ToDo toDo)
+    public async Task<ToDoDTO> Save(ToDo toDo)
     {
         toDo.ToDoId = Guid.NewGuid();
         toDo.CreationDate = DateTime.Now;        
@@ -43,36 +55,32 @@ public class ToDoService : IToDoService
         await context.AddAsync(toDo);
         await context.SaveChangesAsync();
 
-        return toDo;
+        return mapper.Map<ToDoDTO>(toDo);
     }
 
     public async Task<bool> Update(Guid id, ToDo toDo)
     {
         var currentToDo = context.ToDos.Find(id);
 
-        if(currentToDo != null)
-        {
-            currentToDo.CategoryId = toDo.CategoryId;
-            currentToDo.Title = toDo.Title;
-            currentToDo.Description = toDo.Description;
-            currentToDo.Priority = toDo.Priority;
+        if(currentToDo is null) return false;
 
-            await context.SaveChangesAsync();
-            return true;
-        }
-        return false;
+        currentToDo.CategoryId = toDo.CategoryId;
+        currentToDo.Title = toDo.Title;
+        currentToDo.Description = toDo.Description;
+        currentToDo.Priority = toDo.Priority;
+
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> Delete(Guid id)
     {
         var currentToDo = context.ToDos.Find(id);
 
-        if(currentToDo != null)
-        {
-            context.Remove(currentToDo);
-            await context.SaveChangesAsync();
-            return true;
-        }
-        return false;
+        if(currentToDo != null) return false;
+
+        context.Remove(currentToDo);
+        await context.SaveChangesAsync();
+        return true;
     }
 }

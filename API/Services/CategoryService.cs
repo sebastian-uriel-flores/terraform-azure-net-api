@@ -1,14 +1,18 @@
-using DemoAPIAzure.Models;
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using DemoAPIAzure.DTOs;
+using DemoAPIAzure.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoAPIAzure.Services;
 
 public interface ICategoryService
 {
-    IEnumerable<Category> Get();
+    Task<List<CategoryDTO>> Get();
 
-    Task<Category?> Get(Guid id);
+    Task<CategoryDTO> Get(Guid id);
 
-    Task<Category> Save(Category category);
+    Task<CategoryDTO> Save(Category category);
 
     Task<bool> Update(Guid id, Category category);
 
@@ -16,59 +20,64 @@ public interface ICategoryService
 }
 public class CategoryService : ICategoryService
 {
-    ToDoContext context;
+    private readonly ToDoContext context;
+    private readonly IMapper mapper;
 
-    public CategoryService(ToDoContext dbContext)
+    public CategoryService(ToDoContext dbContext, IMapper mapper)
     {
         this.context = dbContext;
+        this.mapper = mapper;
     }
 
-    public IEnumerable<Category> Get()
+    public async Task<List<CategoryDTO>> Get()
     {
-        return context.Categories;
+        return await context.Categories            
+            .ProjectTo<CategoryDTO>(mapper.ConfigurationProvider)
+            .OrderByDescending(c => c.Weight)
+            .OrderBy(c => c.Name)
+            .ToListAsync();
     }
 
-    public async Task<Category?> Get(Guid id)
+    public async Task<CategoryDTO> Get(Guid id)
     {
-        return await context.Categories.FindAsync(id);
+        var category = await context.Categories
+            .Include(c => c.ToDos)            
+            .FirstOrDefaultAsync(c => c.CategoryId == id);
+        return mapper.Map<CategoryDTO>(category);
     }
 
-    public async Task<Category> Save(Category category)
+    public async Task<CategoryDTO> Save(Category category)
     {
         category.CategoryId = Guid.NewGuid();
         category.ToDos = null;
         await context.AddAsync(category);
         await context.SaveChangesAsync();
 
-        return category;
+        return mapper.Map<CategoryDTO>(category);
     }
 
     public async Task<bool> Update(Guid id, Category category)
     {
-        var currentCategory = context.Categories.Find(id);
+        var currentCategory = await context.Categories.FindAsync(id);
 
-        if(currentCategory != null)
-        {
-            currentCategory.Name = category.Name;
-            currentCategory.Description = category.Description;
-            currentCategory.Weight = category.Weight;
+        if(currentCategory is null) return false;
+        
+        currentCategory.Name = category.Name;
+        currentCategory.Description = category.Description;
+        currentCategory.Weight = category.Weight;
 
-            await context.SaveChangesAsync();
-            return true;
-        }
-        return false;
+        await context.SaveChangesAsync();
+        return true;
     }
 
     public async Task<bool> Delete(Guid id)
     {
-        var currentCategory = context.Categories.Find(id);
+        var currentCategory = await context.Categories.FindAsync(id);
 
-        if(currentCategory != null)
-        {
-            context.Remove(currentCategory);
-            await context.SaveChangesAsync();
-            return true;
-        }
-        return false;
+        if(currentCategory is null) return false;
+
+        context.Remove(currentCategory);
+        await context.SaveChangesAsync();
+        return true;
     }
 }
