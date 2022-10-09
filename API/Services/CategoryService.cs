@@ -12,7 +12,7 @@ public interface ICategoryService
 
     Task<CategoryDTO> Get(Guid id);
 
-    Task<CategoryDTO> Save(Category category);
+    Task<Guid> Save(Category category);
 
     Task<bool> Update(Guid id, Category category);
 
@@ -46,14 +46,14 @@ public class CategoryService : ICategoryService
         return mapper.Map<CategoryDTO>(category);
     }
 
-    public async Task<CategoryDTO> Save(Category category)
+    public async Task<Guid> Save(Category category)
     {
         category.CategoryId = Guid.NewGuid();
         category.ToDos = null;
         await context.AddAsync(category);
         await context.SaveChangesAsync();
 
-        return mapper.Map<CategoryDTO>(category);
+        return category.CategoryId;
     }
 
     public async Task<bool> Update(Guid id, Category category)
@@ -62,10 +62,11 @@ public class CategoryService : ICategoryService
 
         if(currentCategory is null) return false;
         
-        currentCategory.Name = category.Name;
+        currentCategory.Name = category.Name;        
         currentCategory.Description = category.Description;
         currentCategory.Weight = category.Weight;
 
+        context.Update(currentCategory);
         await context.SaveChangesAsync();
         return true;
     }

@@ -18,6 +18,7 @@ namespace DemoAPIAzure.Entities.Configurations
                     CategoryId = guid1,
                     Priority = ToDoPriority.Middle,
                     Title = "Milk",
+                    Description = "Nestle",
                     CreationDate = DateTime.Now
                 },
                 new ToDo
@@ -34,6 +35,7 @@ namespace DemoAPIAzure.Entities.Configurations
                     CategoryId = guid2,
                     Priority = ToDoPriority.High,
                     Title = "Kubernetes",
+                    Description = "k8s",
                     CreationDate = DateTime.Now
                 },
                 new ToDo

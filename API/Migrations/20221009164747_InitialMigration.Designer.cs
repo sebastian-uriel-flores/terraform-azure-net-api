@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DemoAPIAzure.Migrations
 {
     [DbContext(typeof(ToDoContext))]
-    [Migration("20221009142718_InitialMigration")]
+    [Migration("20221009164747_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,12 +49,14 @@ namespace DemoAPIAzure.Migrations
                         new
                         {
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
+                            Description = "All the things I want to buy",
                             Name = "Things to buy",
                             Weight = 20
                         },
                         new
                         {
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
+                            Description = "All the Platzi courses that I consider fun or that will be useful for muy proffesion",
                             Name = "Platzi courses to do",
                             Weight = 50
                         });
@@ -94,7 +96,8 @@ namespace DemoAPIAzure.Migrations
                         {
                             ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
-                            CreationDate = new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3927),
+                            CreationDate = new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8970),
+                            Description = "Nestle",
                             Priority = 2,
                             Title = "Milk"
                         },
@@ -102,7 +105,7 @@ namespace DemoAPIAzure.Migrations
                         {
                             ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"),
-                            CreationDate = new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3938),
+                            CreationDate = new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8979),
                             Priority = 3,
                             Title = "Dog food"
                         },
@@ -110,7 +113,8 @@ namespace DemoAPIAzure.Migrations
                         {
                             ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                            CreationDate = new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3939),
+                            CreationDate = new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8981),
+                            Description = "k8s",
                             Priority = 3,
                             Title = "Kubernetes"
                         },
@@ -118,7 +122,7 @@ namespace DemoAPIAzure.Migrations
                         {
                             ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                            CreationDate = new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3940),
+                            CreationDate = new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8984),
                             Priority = 3,
                             Title = "New Relic"
                         },
@@ -126,7 +130,7 @@ namespace DemoAPIAzure.Migrations
                         {
                             ToDoId = new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"),
                             CategoryId = new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"),
-                            CreationDate = new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3941),
+                            CreationDate = new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8985),
                             Priority = 3,
                             Title = "Azure Databases"
                         });

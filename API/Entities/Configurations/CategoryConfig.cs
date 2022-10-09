@@ -16,12 +16,14 @@ namespace DemoAPIAzure.Entities.Configurations
                 { 
                     CategoryId = guid1,
                     Name = "Things to buy",
+                    Description = "All the things I want to buy",
                     Weight = 20
                 },
                 new Category 
                 { 
                     CategoryId = guid2,
                     Name = "Platzi courses to do",
+                    Description = "All the Platzi courses that I consider fun or that will be useful for muy proffesion",                    
                     Weight = 50
                 }
             };

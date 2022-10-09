@@ -27,16 +27,18 @@ public class CategoryController : ControllerBase
     {
         var category = await categoryService.Get(id);
         
-        return category is null ? NotFound() : Ok(category);
+        return (category is null) ? NotFound() : Ok(category);
     }
     
     [HttpPost]
     public async Task<ActionResult<CategoryDTO>> Save([FromBody] Category category)
     {
-        var createdResource = await categoryService.Save(category);
+        var newCategoryId = await categoryService.Save(category);
+        var createdResource = await categoryService.Get(newCategoryId);
+        
         var actionName = nameof(CategoryController.GetById);
         var controllerName = "category";
-        var routeValues = new { id = createdResource.CategoryId };
+        var routeValues = new { id = newCategoryId };
         return CreatedAtAction(actionName, controllerName, routeValues, createdResource);
     }
 

@@ -12,7 +12,7 @@ public interface IToDoService
 
     Task<ToDoDTO> Get(Guid id);
 
-    Task<ToDoDTO> Save(ToDo toDo);
+    Task<Guid> Save(ToDo toDo);
 
     Task<bool> Update(Guid id, ToDo toDo);
 
@@ -47,20 +47,20 @@ public class ToDoService : IToDoService
         return mapper.Map<ToDoDTO>(toDo);
     }
 
-    public async Task<ToDoDTO> Save(ToDo toDo)
+    public async Task<Guid> Save(ToDo toDo)
     {
-        toDo.ToDoId = Guid.NewGuid();
+        toDo.ToDoId = Guid.NewGuid();        
         toDo.CreationDate = DateTime.Now;        
         toDo.Category = null;
         await context.AddAsync(toDo);
         await context.SaveChangesAsync();
 
-        return mapper.Map<ToDoDTO>(toDo);
+        return toDo.ToDoId;        
     }
 
     public async Task<bool> Update(Guid id, ToDo toDo)
     {
-        var currentToDo = context.ToDos.Find(id);
+        var currentToDo = await context.ToDos.FindAsync(id);
 
         if(currentToDo is null) return false;
 
@@ -69,15 +69,16 @@ public class ToDoService : IToDoService
         currentToDo.Description = toDo.Description;
         currentToDo.Priority = toDo.Priority;
 
+        context.Update(currentToDo);
         await context.SaveChangesAsync();
         return true;
     }
 
     public async Task<bool> Delete(Guid id)
     {
-        var currentToDo = context.ToDos.Find(id);
+        var currentToDo = await context.ToDos.FindAsync(id);
 
-        if(currentToDo != null) return false;
+        if(currentToDo is null) return false;
 
         context.Remove(currentToDo);
         await context.SaveChangesAsync();

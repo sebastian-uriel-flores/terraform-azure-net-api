@@ -48,23 +48,23 @@ namespace DemoAPIAzure.Migrations
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "Description", "Name", "Weight" },
-                values: new object[] { new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), null, "Things to buy", 20 });
+                values: new object[] { new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), "All the things I want to buy", "Things to buy", 20 });
 
             migrationBuilder.InsertData(
                 table: "Categories",
                 columns: new[] { "CategoryId", "Description", "Name", "Weight" },
-                values: new object[] { new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), null, "Platzi courses to do", 50 });
+                values: new object[] { new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), "All the Platzi courses that I consider fun or that will be useful for muy proffesion", "Platzi courses to do", 50 });
 
             migrationBuilder.InsertData(
                 table: "ToDos",
                 columns: new[] { "ToDoId", "CategoryId", "CreationDate", "Description", "Priority", "Title" },
                 values: new object[,]
                 {
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3927), null, 2, "Milk" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3938), null, 3, "Dog food" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3939), null, 3, "Kubernetes" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3940), null, 3, "New Relic" },
-                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 10, 9, 11, 27, 18, 324, DateTimeKind.Local).AddTicks(3941), null, 3, "Azure Databases" }
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfa"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8970), "Nestle", 2, "Milk" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfb"), new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8979), null, 3, "Dog food" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8981), "k8s", 3, "Kubernetes" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfd"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8984), null, 3, "New Relic" },
+                    { new Guid("8c2196e4-9d06-4574-a212-d4bdef0a4bfe"), new Guid("7c2196e4-9d06-4574-a212-d4bdef0a4bfc"), new DateTime(2022, 10, 9, 13, 47, 47, 451, DateTimeKind.Local).AddTicks(8985), null, 3, "Azure Databases" }
                 });
 
             migrationBuilder.CreateIndex(

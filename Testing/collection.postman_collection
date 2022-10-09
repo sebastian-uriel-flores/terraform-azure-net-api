@@ -154,7 +154,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/category/824d1bd5-9bc9-4ec5-aa11-6d6ebbcb5e67",
+							"raw": "{{protocol}}://{{host}}/api/category/7c2196e4-9d06-4574-a212-d4bdef0a4bfb",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
@@ -162,7 +162,7 @@
 							"path": [
 								"api",
 								"category",
-								"824d1bd5-9bc9-4ec5-aa11-6d6ebbcb5e67"
+								"7c2196e4-9d06-4574-a212-d4bdef0a4bfb"
 							]
 						}
 					},
@@ -234,7 +234,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"Things to learn 2\",\r\n    \"description\": \"All the things I want to learn in my life 2\",\r\n    \"weight\": 82\r\n}",
+							"raw": "{\r\n    \"name\": \"Things to buy\",\r\n    \"description\": \"All the things I haved to buy this weekend!!\",\r\n    \"weight\": 30\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -242,7 +242,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/category/f2041869-d1d1-4090-b677-4c5a1a43a733",
+							"raw": "{{protocol}}://{{host}}/api/category/7c2196e4-9d06-4574-a212-d4bdef0a4bfb",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
@@ -250,7 +250,7 @@
 							"path": [
 								"api",
 								"category",
-								"f2041869-d1d1-4090-b677-4c5a1a43a733"
+								"7c2196e4-9d06-4574-a212-d4bdef0a4bfb"
 							]
 						}
 					},
@@ -302,7 +302,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/category/8f2877a3-40a1-44fa-9b7f-540e026e7854",
+							"raw": "{{protocol}}://{{host}}/api/category/c94e3eee-70c3-4556-8dfc-8b1f95d96d10",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
@@ -310,7 +310,7 @@
 							"path": [
 								"api",
 								"category",
-								"8f2877a3-40a1-44fa-9b7f-540e026e7854"
+								"c94e3eee-70c3-4556-8dfc-8b1f95d96d10"
 							]
 						}
 					},
@@ -369,10 +369,10 @@
 									"        // Validate response body to have a property named 'toDoId'\r",
 									"        // with the ID of the new Tarea\r",
 									"        pm.expect(responseToDo).to.have.property('toDoId').not.to.equal(undefined);\r",
-									"        const { toDoId, categoryId, title, description, priority } = responseToDo;\r",
+									"        const { toDoId, category, title, description, priority } = responseToDo;\r",
 									"            \r",
 									"        // Validate response body to have the same values sent in the request body    \r",
-									"        pm.expect( categoryId ).to.eq( pm.request.body.raw.categoryId );\r",
+									"        pm.expect( category ).to.have.property('categoryId').eq( pm.request.body.raw.categoryId );\r",
 									"        pm.expect( title ).to.eq( pm.request.body.raw.title );\r",
 									"        pm.expect( description ).to.eq( pm.request.body.raw.description );\r",
 									"        pm.expect( priority ).to.eq( pm.request.body.raw.priority );    \r",
@@ -418,7 +418,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"categoryId\": \"7c2196e4-9d06-4574-a212-d4bdef0a4bfb\",\r\n    \"title\": \"Visit my granny\",\r\n    \"description\": \"My granny needs help with her house\",\r\n    \"priority\": 2\r\n}",
+							"raw": "{\r\n    \"categoryId\": \"7c2196e4-9d06-4574-a212-d4bdef0a4bfb\",\r\n    \"title\": \"Visit my granny 5\",\r\n    \"description\": \"My granny needs help with her house\",\r\n    \"priority\": 2\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -496,7 +496,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/toDo/f91144d4-0137-429a-8d24-abe92aa5c600",
+							"raw": "{{protocol}}://{{host}}/api/toDo/f3bc8cc8-95d4-443d-92b7-317d5ccc607b",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
@@ -504,7 +504,7 @@
 							"path": [
 								"api",
 								"toDo",
-								"f91144d4-0137-429a-8d24-abe92aa5c600"
+								"f3bc8cc8-95d4-443d-92b7-317d5ccc607b"
 							]
 						}
 					},
@@ -524,7 +524,7 @@
 									"    pm.request.url = url.substr(0,  index + searchParam.length) + pm.variables.get('toDo').toDoId;\r",
 									"    \r",
 									"    const body = {\r",
-									"        categoryId: pm.variables.get('toDo').categoryId,\r",
+									"        categoryId: pm.variables.get('toDo').category.categoryId,\r",
 									"        title: \"Test 2\",\r",
 									"        description: \"Test ToDo 2\",\r",
 									"        priority: 1\r",
@@ -550,12 +550,12 @@
 									"            pm.expect(response.status).to.equal(\"OK\");        \r",
 									"\r",
 									"            const responseToDo = response.json();\r",
-									"            const { toDoId, categoryId, title, description, priority } = responseToDo;\r",
+									"            const { toDoId, category, title, description, priority } = responseToDo;\r",
 									"\r",
 									"            // Validate that the toDo has been modified in the database \r",
 									"            // and that we are retrieving the new values in the GET API\r",
 									"            pm.expect( toDoId ).to.eq( sentToDo.toDoId );\r",
-									"            pm.expect( categoryId ).to.eq( sentToDo.categoryId );\r",
+									"            pm.expect( category.categoryId ).to.eq( sentToDo.categoryId );\r",
 									"            pm.expect( title ).to.eq( sentToDo.title );\r",
 									"            pm.expect( description ).to.eq( sentToDo.description );\r",
 									"            pm.expect( priority ).to.eq( sentToDo.priority );        \r",
@@ -586,7 +586,7 @@
 							}
 						},
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/toDo/e2d45cc2-bf86-45ec-8466-421ad930d222",
+							"raw": "{{protocol}}://{{host}}/api/toDo/8c2196e4-9d06-4574-a212-d4bdef0a4bfe",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
@@ -594,7 +594,7 @@
 							"path": [
 								"api",
 								"toDo",
-								"e2d45cc2-bf86-45ec-8466-421ad930d222"
+								"8c2196e4-9d06-4574-a212-d4bdef0a4bfe"
 							]
 						}
 					},
@@ -645,7 +645,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{protocol}}://{{host}}/api/toDo/f2ca0bec-88ea-42f2-99db-fc1d36e84f01",
+							"raw": "{{protocol}}://{{host}}/api/toDo/cdbe1eab-12c7-4aaf-a1ed-0efd7a3ad1d2",
 							"protocol": "{{protocol}}",
 							"host": [
 								"{{host}}"
@@ -653,7 +653,7 @@
 							"path": [
 								"api",
 								"toDo",
-								"f2ca0bec-88ea-42f2-99db-fc1d36e84f01"
+								"cdbe1eab-12c7-4aaf-a1ed-0efd7a3ad1d2"
 							]
 						}
 					},

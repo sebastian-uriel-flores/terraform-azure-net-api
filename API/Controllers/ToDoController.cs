@@ -33,11 +33,12 @@ public class ToDoController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<ToDoDTO>> Save([FromBody] ToDo toDo)
     {        
-        var createdResource = await toDoService.Save(toDo);
+        var newToDoId = await toDoService.Save(toDo);
+        var createdResource = await toDoService.Get(newToDoId);
 
         var actionName = nameof(ToDoController.GetById);
         var controllerName = "toDo";
-        var routeValues = new { id = createdResource.ToDoId };
+        var routeValues = new { id = newToDoId };
         return CreatedAtAction(actionName, controllerName, routeValues, createdResource);
     }
 
