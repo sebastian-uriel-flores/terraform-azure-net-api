@@ -72,11 +72,12 @@ If the Service Principal has been created, the previous command will output the 
 ``` 
 
 You will have to store the Service Principal settings as GitHub Secrets, with the following names:
-
-- **ARM_CLIENT_ID:** [application id]
-- **ARM_CLIENT_SECRET:** [client secret]
-- **ARM_SUBSCRIPTION_ID:** [subscription id]
-- **ARM_TENANT_ID:** [tenant id]
+```shell
+ARM_CLIENT_ID: [application id]
+ARM_CLIENT_SECRET: [client secret]
+ARM_SUBSCRIPTION_ID: [subscription id]
+ARM_TENANT_ID: [tenant id]
+```
 
 ### Creating the Terraform backend in Azure
 
@@ -100,10 +101,16 @@ az storage container create --name "[container name]" --account-name "[storage a
 $storage_account_key=(az storage account keys list --resource-group [resource group name] --account-name [storage account name] --query '[0].value' -o tsv)
 ```
 
-To continue, you must create three GitHub Secrets, to store the new **Resource Group Name**, the **Storage Account Name**, and the **Storage Account Key**, with the following names:
-- **ARM_ACCOUNT_KEY**: [storage account key]
-- **TF_BACKEND_RESOURCE_GROUP_NAME**: [resource group name]
-- **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [storage account name]
+The last step in this section requires you to indicate to the Terraform Client where to store the State of your Infrastructure. To do this, you have to store your recently obtained **Storage Account Key** as a GitHub Secret with the name `ARM_ACCOUNT_KEY`. Next, you have to open the file */Infrastructure/main.tf* and update the section **backend**, to match the current settings of your Storage Account:
+
+```terraform
+backend "azurerm" {
+    resource_group_name  = "[resource group name used for the Terraform backend]"
+    storage_account_name = "[storage account name used for the Terraform backend]"
+    container_name       = "[storage container name used for the Terraform backend]"
+    key                  = "terraform.tfstate"
+  }
+```
 
 ## 2. Setting up your Terraform client in GitHub Actions
 
@@ -124,8 +131,11 @@ You have to copy this Token and store it as a new GitHub Secret with the name **
 ## 3. Latest settings
 
 I have to request you create two more extra GitHub Secrets. They are intended to be used in the creation of the Azure SQL Database:
-- **SQL_SERVER_ADMIN_USERNAME:** [The username of your Azure SQL Database]
-- **SQL_SERVER_ADMIN_PASSWORD:** [The password of your Azure SQL Database]
+
+```shell
+SQL_SERVER_ADMIN_USERNAME: [The username of your Azure SQL Database]
+SQL_SERVER_ADMIN_PASSWORD: [The password of your Azure SQL Database]
+```
 
 ## 4. Verify the Creations
 In the end, you should have the following things created:
@@ -136,6 +146,7 @@ In the end, you should have the following things created:
 - A Storage Account inside the Resource Group, to be used by the Terraform client.
 - A Blob Container inside the Storage Account, to store the Terraform client state.
 - A Service Principal in your Tenant who give GitHub Actions the permissions to interact with your dedicated Azure Subscription.
+- The **backend** section of the */Infrastructure/main.tf* Terraform file updated with the settings of the Storage Account used for the Terraform backend.
 
 **Terraform Cloud:**
 -  A Terraform API Token.
@@ -146,8 +157,6 @@ In the end, you should have the following things created:
 - **ARM_SUBSCRIPTION_ID:** [subscriptionID]
 - **ARM_TENANT_ID:** [tenantId]
 - **ARM_ACCOUNT_KEY**: [The Account Key of the Storage Account created for the Terraform Backend]
-- **TF_BACKEND_RESOURCE_GROUP_NAME**: [The Resource Group Name created for the Terraform Backend]
-- **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [The Name of the Storage Account created for the Terraform Backend]
 - **TF_API_TOKEN**: [Terraform Cloud API Token]
 - **SQL_SERVER_ADMIN_USERNAME:** [The username of your Azure SQL Database]
 - **SQL_SERVER_ADMIN_PASSWORD:** [The password of your Azure SQL Database]
