@@ -2,7 +2,7 @@
 
 Welcome!
 
-This project consists of a ToDo Web API created with the .NET 6 framework, that is connected to an Azure SQL Database and deployed to an Azure Web App using Terraform.
+This project consists of a ToDo Web API created with the .NET 6 framework, that is connected to an [Azure SQL Database](https://learn.microsoft.com/en-us/azure/azure-sql/database/sql-database-paas-overview?view=azuresql) and deployed to an [Azure Web App](https://learn.microsoft.com/en-us/azure/app-service/overview) using [Terraform](https://www.terraform.io/).
 Every time you push some changes to the __main__ branch, a GitHub Actions Workflow does the next jobs:
 
 1. It updates the Azure infrastructure using Terraform.
@@ -11,6 +11,9 @@ Every time you push some changes to the __main__ branch, a GitHub Actions Workfl
 
 As you can see, this project covers the basics of the Continuous Integration and Continuous Deployment of a cloud App based on Azure.
 I wish it could be of help mainly for beginners, but also for the people who are used to work with other clouds or who wants to remember the basics of every part of a CI/CD workflow.
+
+
+The project infrastructure is show in the next picture:
 
 ![Azure APIs](https://user-images.githubusercontent.com/5461235/192288380-81e254d4-7721-4071-957c-f6ab1f965eb6.png)
 
@@ -24,16 +27,17 @@ Next, you must create an Azure Account. You can check this link for more informa
 If you don't know anything about Azure, I suggest you read the [Azure Fundamentals](https://learn.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/fundamental-concepts).
 
 Once you have your account ready to use, I suggest you create a new subscription for all the resources that are going to be created, instead of using the default one. It will give you more control of your cloud environment and the costs associated.
+
 To continue, you have to install Azure cli in your machine. Even if you have Azure PowerShell already installed, the Terraform Cli will request you to install Azure Cli, so it is a mandatory step. 
 
-To install Azure Cli, run the next command in a Terminal session:
+To install Azure Cli, run the next command in a terminal session:
 
 ```shell
 winget install -e --id Microsoft.AzureCLI
 ```
-Next, you have to sign in into your Azure Account using Azure Cli. Here, you have two options:
+Next, you have to sign in into your Azure Account, using Azure Cli. Here, you have two options:
 
-1. The first option is to Log In using your Web Browser. I recommend this option, just to keep your terminal clean of sensitive information.:
+1. The first option is to sign in using your Web Browser. I recommend this option, because it lets you keep your terminal clean of sensitive information. The command to be executed is this:
 
 ```shell
 az login
@@ -45,19 +49,19 @@ az login
 az login --user [alias@myCompany.com] -password [password]
 ```
 
-Once you have signed in your Azure account, you have to indicate Azure Cli that you are working with the new Subscription, using the next commands:
+Once you have signed in your Azure account, you have to indicate Azure Cli that you are working with the new Subscription, using the next command:
 
 ```shell
 az account set --subscription [subscription name or id]
 ```
 
-Next, you have to create a Service Principal to give GitHub Actions permissions over the recently created subscription. You can do this by running the next script in a your Terminal session:
+Next, you have to create a Service Principal to give GitHub Actions permissions over the recently created Subscription. You can do this by running the next script in a your Terminal session:
 
 ```shell
 az ad sp create-for-rbac --name "[service principal name]" --role contributor --scopes /subscriptions/[subscription id]
 ```
 
-If the Service Principal has been created, the previous command will output the next object with the information of the new Service Principal:
+If the Service Principal has been created, the previous command will output the main information of the new Service Principal:
 ```json
 {
   "appId": "[application id]",
@@ -67,7 +71,7 @@ If the Service Principal has been created, the previous command will output the 
 }
 ``` 
 
-You will have to store its values as GitHub Secrets, with the following names:
+You will have to store the Service Principal settings as GitHub Secrets, with the following names:
 
 - **ARM_CLIENT_ID:** [application id]
 - **ARM_CLIENT_SECRET:** [client secret]
@@ -75,34 +79,29 @@ You will have to store its values as GitHub Secrets, with the following names:
 - **ARM_TENANT_ID:** [tenant id]
 
 ### Creating the Terraform backend in Azure
+
 Now, you have to create a Resource Group in your Subscription and a Storage Account inside of it, that will be used by the Terraform client as the backend.
-You can do it by running the next scripts in your Terminal session:
+You can do it by running the next scripts in your terminal session:
 
 ```shell
-# Create the Resource Group in your current Subscription
-az group create \
-  --name "[resource group name] \
-  --location "[location]"
+# 1. Create the Resource Group in your current Subscription
+az group create --name "[resource group name] --location "[location]"
   
 # Create the Storage Account
-az storage account create \
-  --name [storage account name] \
-  --resource-group [resource group name] \
-  --location [location] \
-  --sku Standard_LRS \  
+az storage account create --resource-group [resource group name] --name [storage account name] --location [location] --sku Standard_LRS --encryption-services blob
 
 $accountKey=$(az storage account keys list --account-name "[storage account name]" --query "[?permissions == 'FULL'].[value][0]" --output tsv)
 
 # Create a Container inside of the Storage Account
-az storage container create \
-    --name "[container name]" \
-    --account-name "[storage account name]" \
-    --account-key $accountKey \
-    --public-access blob
+az storage container create --name "[container name]" --account-name "[storage account name]"
+
+# Retrieve the Account Key of the Storage Account
+# You will have to store this value as a GitHub Secret
+$storage_account_key=(az storage account keys list --resource-group [resource group name] --account-name [storage account name] --query '[0].value' -o tsv)
 ```
 
-To continue, you must create three GitHub Secrets, to store the new Resource Group Name, the Storage Account Name, and the Storage Account Key, with the following names:
-- **ARM_ACCOUNT_KEY**: [storage account key(you can check it in Azure Portal)]
+To continue, you must create three GitHub Secrets, to store the new **Resource Group Name**, the **Storage Account Name**, and the **Storage Account Key**, with the following names:
+- **ARM_ACCOUNT_KEY**: [storage account key]
 - **TF_BACKEND_RESOURCE_GROUP_NAME**: [resource group name]
 - **TF_BACKEND_STORAGE_ACCOUNT_NAME**: [storage account name]
 
